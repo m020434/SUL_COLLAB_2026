@@ -7,7 +7,10 @@
 		{
 			"Name": "SUL_COLLAB_2026",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
 		}
 	],
 	"Plugins": [
