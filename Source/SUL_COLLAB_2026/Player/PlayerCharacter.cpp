@@ -5,6 +5,7 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 #include "Camera/CameraComponent.h"
+#include "SUL_COLLAB_2026/Component/HealthComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -15,6 +16,9 @@ APlayerCharacter::APlayerCharacter()
 	CamComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CamComp->SetupAttachment(GetRootComponent());
 	CamComp->SetRelativeLocation(FVector(50, 0, 50));
+
+	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+	
 }
 
 // Called when the game starts or when spawned
