@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class UInputAction;
+class UHealthComponent;
 
 UCLASS()
 class SUL_COLLAB_2026_API APlayerCharacter : public ACharacter
@@ -27,6 +28,9 @@ public:
 	UInputAction* LookInputAction;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")	
 	UInputAction* JumpInputAction;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UHealthComponent* HealthComp;
 	
 protected:
 	// Called when the game starts or when spawned
