@@ -3,6 +3,8 @@
 
 #include "HealthComponent.h"
 
+#include "Interfaces/IPluginManager.h"
+
 
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
@@ -11,7 +13,7 @@ UHealthComponent::UHealthComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	
 }
 
 
@@ -32,6 +34,31 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UHealthComponent::TakeDamage(int Damage)
+{
+	CurrentHealthPoint -= Damage;
+
+	if (CurrentHealthPoint <= 0)
+	{
+		// Dead
+	}
+
+	if (CurrentHealthPoint >= MaxHealthPoint)
+	{
+		CurrentHealthPoint = MaxHealthPoint;
+	}
+}
+
+void UHealthComponent::SetHealth(int NewHealth)
+{
+	CurrentHealthPoint = NewHealth;
+
+	if (CurrentHealthPoint >= MaxHealthPoint)
+	{
+		CurrentHealthPoint = MaxHealthPoint;
+	}
 }
 
 

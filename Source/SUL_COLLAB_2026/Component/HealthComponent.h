@@ -19,16 +19,22 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	int MaxHealthPoint;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int CurrentHealthPoint;
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	int CurrentHealthPoint; 
+	
 	
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 
-
+	UFUNCTION(BlueprintCallable)
+	void TakeDamage(int Damage);
+	UFUNCTION(BlueprintCallable)
+	void SetHealth(int NewHealth);
 };
