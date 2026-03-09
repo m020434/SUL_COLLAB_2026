@@ -5,6 +5,7 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "SUL_COLLAB_2026/Component/HealthComponent.h"
 
 // Sets default values
@@ -43,8 +44,51 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EIC->BindAction(MoveInputAction, ETriggerEvent::Triggered, this, FName("DoMove"));
 		EIC->BindAction(LookInputAction, ETriggerEvent::Triggered, this, FName("DoLook"));
 		EIC->BindAction(JumpInputAction, ETriggerEvent::Started, this, FName("DoJumpUp"));
+		EIC->BindAction(DashInputAction, ETriggerEvent::Started, this, FName("DoDash"));
 	}
 }
+
+void APlayerCharacter::EndDash()
+{
+	GetCharacterMovement()->GravityScale = StoredGravityScale;
+	InDash = false;
+	GetWorldTimerManager().SetTimer(DashCooldownTimer, this, &APlayerCharacter::ResetDash, DashCooldownTime);
+
+}
+
+void APlayerCharacter::ResetDash()
+{
+	GEngine->AddOnScreenDebugMessage(3, 0.5f, FColor::Red, "DashReset");
+
+	CanDash = true;
+}
+
+void APlayerCharacter::Dash_Implementation()
+{
+	GetCharacterMovement()->Velocity = FVector(0, 0, 0);
+	GetCharacterMovement()->GravityScale = 0;
+	FVector PlayerVelocity = GetActorForwardVector() * DashSpeed;
+	PlayerVelocity.Z = 0;
+	LaunchCharacter(PlayerVelocity, false, false);
+	GEngine->AddOnScreenDebugMessage(2, 1.5f, FColor::Red, PlayerVelocity.ToString());
+	
+}
+
+void APlayerCharacter::DoDash_Implementation(bool Input)
+{
+	if (CanDash)
+	{
+		StoredSpeed = GetCharacterMovement()->Velocity.Size();
+		StoredGravityScale = GetCharacterMovement()->GravityScale;
+		GEngine->AddOnScreenDebugMessage(1, 0.5f, FColor::Red, "Do Dash");
+		CanDash = false;
+		InDash = true;
+		Dash();
+		GetWorldTimerManager().SetTimer(DashTimer, this, &APlayerCharacter::EndDash, DashTime);
+
+	}
+}
+
 
 
 void APlayerCharacter::DoMove_Implementation(FVector2D Input)
@@ -60,11 +104,13 @@ void APlayerCharacter::DoLook_Implementation(FVector2D Input)
 	AddControllerYawInput(Input.X);
 	AddControllerPitchInput(Input.Y);
 }
-
+	
 void APlayerCharacter::DoJumpUp_Implementation(bool Input)
 {
 	Jump();	
 }
+
+
 
 
 
