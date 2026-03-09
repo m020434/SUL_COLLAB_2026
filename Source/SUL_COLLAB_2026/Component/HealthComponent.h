@@ -16,18 +16,19 @@ public:
 	// Sets default values for this component's properties
 	UHealthComponent();
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int MaxHealthPoint;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	int MaxHealth;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	int CurrentHealth;
 
+	int CurrentHealthPoint; 
+	
 public:
-	UFUNCTION(BlueprintCallable)
-	void TakeDamage(int Damage);
-	UFUNCTION(BlueprintCallable)
-	void SetHealth(int NewHealth);
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+
 };

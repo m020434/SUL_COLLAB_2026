@@ -2,49 +2,36 @@
 
 
 #include "HealthComponent.h"
-//#include "Interfaces/IPluginManager.h"
 
 
-#pragma region Initialisation
-	// Sets default values for this component's properties
-	UHealthComponent::UHealthComponent()
-	{
-		MaxHealth = 3; //Default
-	}
-
-	// Called when the game starts
-	void UHealthComponent::BeginPlay()
-	{
-		Super::BeginPlay();
-		
-		CurrentHealth = MaxHealth;
-	}
-#pragma endregion
-
-
-void UHealthComponent::TakeDamage(int Damage)
+// Sets default values for this component's properties
+UHealthComponent::UHealthComponent()
 {
-	CurrentHealth -= Damage;
+	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+	// off to improve performance if you don't need them.
+	PrimaryComponentTick.bCanEverTick = true;
 
-	if (CurrentHealth <= 0)
-	{
-		// Dead
-		//TODO: A Multicast delegate here would be a good idea, we want other things to know when we die.
-	}
-
-	if (CurrentHealth >= MaxHealth)
-	{
-		CurrentHealth = MaxHealth;
-	}
+	// ...
 }
 
-void UHealthComponent::SetHealth(int NewHealth)
-{
-	CurrentHealth = NewHealth;
 
-	if (CurrentHealth >= MaxHealth)
-	{
-		CurrentHealth = MaxHealth;
-	}
+// Called when the game starts
+void UHealthComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// ...
+	
 }
+
+
+// Called every frame
+void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                     FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	// ...
+}
+
 
