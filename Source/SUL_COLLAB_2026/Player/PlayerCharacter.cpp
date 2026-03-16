@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "SUL_COLLAB_2026/Component/HealthComponent.h"
+#include "SUL_COLLAB_2026/Weapon/Weapon.h"
 
 #pragma region Initialisation
 	// Sets default values
@@ -48,8 +49,40 @@
 			EIC->BindAction(JumpInputAction, ETriggerEvent::Started, this, FName("DoJumpUp"));
 			EIC->BindAction(DashInputAction, ETriggerEvent::Started, this, FName("DoDashNSlide"));
 			EIC->BindAction(DashInputAction, ETriggerEvent::Completed, this, FName("StopDashNSlide"));
+			EIC->BindAction(ShootInputAction, ETriggerEvent::Triggered, this, FName("DoShoot"));
+			EIC->BindAction(ReloadInputAction, ETriggerEvent::Started, this, FName("DoReload"));
 		}
 	}
+#pragma endregion
+
+#pragma region Shooting
+	void APlayerCharacter::DoShoot_Implementation(bool Input)
+	{
+		if (Gun != nullptr)
+		{
+			Gun->Shoot();
+		}
+
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "No Gun");
+		}
+	}
+
+	void APlayerCharacter::DoReload_Implementation(bool Input)
+	{
+		if (Gun != nullptr)
+		{
+			Gun->Reloading();
+		}
+
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "No Gun");
+		}
+	}
+
+
 #pragma endregion
 
 #pragma region Slide
@@ -121,6 +154,8 @@
 	{
 		CanSlide = true;
 	}
+
+
 
 #pragma endregion
 
