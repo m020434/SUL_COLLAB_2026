@@ -45,6 +45,8 @@ public:
 	UInputAction* ShootInputAction;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
 	UInputAction* ReloadInputAction;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
+	UInputAction* SlideInputAction;
 
 	
 	// Health Component
@@ -120,7 +122,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	#pragma region Movement Methods
-		//Generic Movement
+		//Generic Movement Inputs
 		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void DoMove(FVector2D Input);
 		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -129,20 +131,25 @@ public:
 		void DoLook(FVector2D Input);
 		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void DoJumpUp(bool Input);
-		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		
 		//Input to dash/slide
-		void DoDashNSlide(bool Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void DoDash(bool Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void StopDash();
+		
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void DoSlide(bool Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void StopSlide();
+		
 		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void Dash();
 		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void Slide();
-		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		void StopDashNSlide();
 
 		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void ChangeToSlideHeight();
-		
 		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void ChangeToDefaultHeight();
 		
