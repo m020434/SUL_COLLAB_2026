@@ -47,10 +47,14 @@
 			EIC->BindAction(MoveInputAction,ETriggerEvent::Completed, this, FName("StopMove"));
 			EIC->BindAction(LookInputAction, ETriggerEvent::Triggered, this, FName("DoLook"));
 			EIC->BindAction(JumpInputAction, ETriggerEvent::Started, this, FName("DoJumpUp"));
-			EIC->BindAction(DashInputAction, ETriggerEvent::Started, this, FName("DoDashNSlide"));
-			EIC->BindAction(DashInputAction, ETriggerEvent::Completed, this, FName("StopDashNSlide"));
 			EIC->BindAction(ShootInputAction, ETriggerEvent::Triggered, this, FName("DoShoot"));
 			EIC->BindAction(ReloadInputAction, ETriggerEvent::Started, this, FName("DoReload"));
+			
+			EIC->BindAction(DashInputAction, ETriggerEvent::Started, this, FName("DoDash"));
+			EIC->BindAction(DashInputAction, ETriggerEvent::Completed, this, FName("StopDash"));
+			
+			EIC->BindAction(SlideInputAction, ETriggerEvent::Started, this, FName("DoSlide"));
+			EIC->BindAction(SlideInputAction, ETriggerEvent::Completed, this, FName("StopSlide"));
 		}
 	}
 #pragma endregion
@@ -86,6 +90,25 @@
 #pragma endregion
 
 #pragma region Slide
+	void APlayerCharacter::DoSlide_Implementation(bool Input)
+	{
+		if (PlayerMovementState != PlayerMovementState::Walk) return;
+		
+		if (!GetCharacterMovement()->IsFalling() && PlayerInputDirection.X > 0)
+		{
+			PlayerMovementAction = true;
+			if (CanSlide)
+			{
+				PlayerMovementState = PlayerMovementState::Slide;
+				SlideHeight = GetActorLocation().Z;
+				CanSlide = false;
+				Slide();
+				GetWorldTimerManager().SetTimer(EndSlideTimer, this, &APlayerCharacter::ReachMinimumSlide, MinSlideTime);
+				GetWorldTimerManager().SetTimer(SlideTimer, this, &APlayerCharacter::CheckSlide,GetWorld()->GetDeltaSeconds(), true);
+			}
+		}
+	}
+
 	void APlayerCharacter::Slide_Implementation()
 	{
 		FVector Force = (GetActorForwardVector() * PlayerInputDirection.X) + (GetActorRightVector() * PlayerInputDirection.Y);
@@ -155,11 +178,29 @@
 		CanSlide = true;
 	}
 
-
-
+	void APlayerCharacter::StopSlide_Implementation()
+	{
+		PlayerMovementAction = false;
+		if (PlayerMovementState == PlayerMovementState::Slide)
+		{
+			EndSlide();
+		}
+	}
 #pragma endregion
 
 #pragma region Dash
+	// The response to the dash input Press
+	void APlayerCharacter::DoDash_Implementation(bool Input)
+	{
+		if(!(PlayerMovementState == PlayerMovementState::Walk && CanDash)) return;
+
+		StoredSpeed = GetCharacterMovement()->Velocity.Size();
+		CanDash = false;
+		PlayerMovementState = PlayerMovementState::Dash;
+		Dash();
+		GetWorldTimerManager().SetTimer(DashTimer, this, &APlayerCharacter::EndDash, DashTime);
+	}
+
 	// End the dash, Reset velocity, turn on gravity, set a cooldown timer
 	void APlayerCharacter::EndDash()
 	{
@@ -198,46 +239,9 @@
 		LaunchCharacter(PlayerVelocity, false, false);
 	}
 
-	// The response to the dash input Press
-	void APlayerCharacter::DoDashNSlide_Implementation(bool Input)
-	{
-		if (PlayerMovementState == PlayerMovementState::Walk)
-		{
-			if (!GetCharacterMovement()->IsFalling() && PlayerInputDirection.X > 0)
-			{
-				PlayerMovementAction = true;
-				if (CanSlide)
-				{
-					PlayerMovementState = PlayerMovementState::Slide;
-					SlideHeight = GetActorLocation().Z;
-					CanSlide = false;
-					Slide();
-					GetWorldTimerManager().SetTimer(EndSlideTimer, this, &APlayerCharacter::ReachMinimumSlide, MinSlideTime);
-					GetWorldTimerManager().SetTimer(SlideTimer, this, &APlayerCharacter::CheckSlide,GetWorld()->GetDeltaSeconds(), true);
-				}
-			}
-			else
-			{
-				if (CanDash)
-				{
-					StoredSpeed = GetCharacterMovement()->Velocity.Size();
-					CanDash = false;
-					PlayerMovementState = PlayerMovementState::Dash;
-					Dash();
-					GetWorldTimerManager().SetTimer(DashTimer, this, &APlayerCharacter::EndDash, DashTime);
-				}
-
-			}
-		}
-	}
-
-	void APlayerCharacter::StopDashNSlide_Implementation()
+	void APlayerCharacter::StopDash_Implementation()
 	{
 		PlayerMovementAction = false;
-		if (PlayerMovementState == PlayerMovementState::Slide)
-		{
-			EndSlide();
-		}
 	}
 #pragma endregion
 
