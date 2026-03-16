@@ -92,7 +92,7 @@ protected:
 	// Player Movement State
 	PlayerMovementState PlayerMovementState = PlayerMovementState::Walk;
 
-	// Variable for dash. 
+	// Variable for dash.
 	float StoredSpeed;
 	float StoredGravityScale;
 	FVector PlayerVelocity = FVector::Zero();
@@ -108,42 +108,44 @@ protected:
 	float SlideHeight;
 	
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	// All Movement Function
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void DoMove(FVector2D Input);
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void StopMove(FVector2D Input);
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void DoLook(FVector2D Input);
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void DoJumpUp(bool Input);
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void DoDashNSlide(bool Input);
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Dash();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Slide();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void StopDashNSlide();
+	#pragma region Movement Methods
+		//Generic Movement
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void DoMove(FVector2D Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void StopMove(FVector2D Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void DoLook(FVector2D Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void DoJumpUp(bool Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		
+		//Input to dash/slide
+		void DoDashNSlide(bool Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void Dash();
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void Slide();
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void StopDashNSlide();
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void ChangeToSlideHeight();
-	
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void ChangeToDefaultHeight();
-	
-	// Function for Dash
-	void EndDash();
-	void ResetDash();
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void ChangeToSlideHeight();
+		
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void ChangeToDefaultHeight();
+		
+		//Dash methods
+		void EndDash();
+		void ResetDash();
 
-	void CheckSlide();
-	void EndSLide();
-	void ReachMinimumSlide();
-	void ResetSlide();
+		//Slide methods
+		void CheckSlide();
+		void EndSlide();
+		void ReachMinimumSlide();
+		void ResetSlide();
+	#pragma endregion
 };
