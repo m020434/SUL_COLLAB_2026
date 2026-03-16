@@ -46,6 +46,25 @@ void AWeapon::Reload_Implementation()
 
 void AWeapon::Shoot_Implementation()
 {
-	
+	if (CanShoot)
+	{
+		FVector Location = FirePoint->GetComponentLocation();
+		FRotator Rotation = FirePoint->GetComponentRotation();
+		GetWorld()->SpawnActor(ProjectilePrefab, &Location, &Rotation);
+
+		CurrentMag--;
+		
+		CanShoot();
+
+		if (CurrentMag <= 0)
+		{
+		
+		}
+
+		else
+		{
+		
+		}
+	}
 }
 
