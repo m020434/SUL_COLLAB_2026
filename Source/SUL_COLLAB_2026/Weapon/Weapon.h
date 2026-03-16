@@ -43,6 +43,8 @@ protected:
 
 	int CurrentMag;
 
+	bool CanShoot = true;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
