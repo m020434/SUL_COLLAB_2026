@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
+class AWeapon;
 class UCameraComponent;
 class UInputAction;
 class UHealthComponent;
@@ -40,7 +41,12 @@ public:
 	UInputAction* JumpInputAction;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
 	UInputAction* DashInputAction;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
+	UInputAction* ShootInputAction;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
+	UInputAction* ReloadInputAction;
 
+	
 	// Health Component
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UHealthComponent* HealthComp;
@@ -74,6 +80,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float DefaultHeight;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gun")
+	AWeapon* Gun;
+	
 	
 
 protected:
@@ -125,6 +134,11 @@ public:
 	void DoJumpUp(bool Input);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void DoDashNSlide(bool Input);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void DoShoot(bool Input);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void DoReload(bool Input);
+	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Dash();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

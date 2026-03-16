@@ -12,8 +12,7 @@ AWeapon::AWeapon()
 	PrimaryActorTick.bCanEverTick = true;
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	MeshComp->SetupAttachment(GetRootComponent());
-	MeshComp->SetRelativeLocation(FVector(0, 0, 0));
+	SetRootComponent(MeshComp);
 
 	FirePoint = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePoint"));
 	FirePoint->SetupAttachment(GetRootComponent());
@@ -23,6 +22,7 @@ AWeapon::AWeapon()
 // Called when the game starts or when spawned
 void AWeapon::BeginPlay()
 {
+	CurrentMag = MagSize;
 	Super::BeginPlay();
 	
 }
@@ -34,36 +34,50 @@ void AWeapon::Tick(float DeltaTime)
 
 }
 
+void AWeapon::SetBullet_Implementation(int NumberOfBullet)
+{
+	CurrentMag = NumberOfBullet;
+}
+
+void AWeapon::Reloading_Implementation()
+{
+	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "Reload");
+
+	GetWorldTimerManager().SetTimer(ReloadTimer, this, &AWeapon::Reload, ReloadCooldown);
+}
+
 void AWeapon::ResetShootCooldown_Implementation()
 {
-	
+	CanShoot = true;
 }
 
 void AWeapon::Reload_Implementation()
 {
-	
+	CurrentMag = MagSize;
+	ResetShootCooldown();
 }
 
 void AWeapon::Shoot_Implementation()
 {
 	if (CanShoot)
 	{
+		CanShoot = false;
+
 		FVector Location = FirePoint->GetComponentLocation();
 		FRotator Rotation = FirePoint->GetComponentRotation();
 		GetWorld()->SpawnActor(ProjectilePrefab, &Location, &Rotation);
+		GEngine->AddOnScreenDebugMessage(1, 0.1, FColor::Red, "pew");
 
 		CurrentMag--;
 		
-		CanShoot();
-
 		if (CurrentMag <= 0)
 		{
-		
+			Reloading();
 		}
 
 		else
 		{
-		
+			GetWorldTimerManager().SetTimer(CooldownTimer, this, &AWeapon::ResetShootCooldown, FireRate);
 		}
 	}
 }

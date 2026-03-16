@@ -9,6 +9,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetStringLibrary.h"
 #include "SUL_COLLAB_2026/Component/HealthComponent.h"
+#include "SUL_COLLAB_2026/Weapon/Weapon.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -55,7 +56,24 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EIC->BindAction(JumpInputAction, ETriggerEvent::Started, this, FName("DoJumpUp"));
 		EIC->BindAction(DashInputAction, ETriggerEvent::Started, this, FName("DoDashNSlide"));
 		EIC->BindAction(DashInputAction, ETriggerEvent::Completed, this, FName("StopDashNSlide"));
+		EIC->BindAction(ShootInputAction, ETriggerEvent::Triggered, this, FName("DoShoot"));
+		EIC->BindAction(ReloadInputAction, ETriggerEvent::Started, this, FName("DoReload"));
+
 	}
+}
+
+void APlayerCharacter::DoShoot_Implementation(bool Input)
+{
+	if (Gun != nullptr)
+	{
+		Gun->Shoot();
+	}
+
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "No Gun");
+	}
+	
 }
 
 // Set the player input to zero for the dashes
@@ -90,7 +108,22 @@ void APlayerCharacter::ChangeToSlideHeight_Implementation()
 
 void APlayerCharacter::ChangeToDefaultHeight_Implementation()
 {
+	
 }
+
+void APlayerCharacter::DoReload_Implementation(bool Input)
+{
+	if (Gun != nullptr)
+	{
+		Gun->Reloading();
+	}
+
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "No Gun");
+	}
+}
+
 
 // End the dash, Reset velocity, turn on gravity, set a cooldown timer
 void APlayerCharacter::EndDash()

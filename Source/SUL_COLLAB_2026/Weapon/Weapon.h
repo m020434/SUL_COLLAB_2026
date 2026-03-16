@@ -20,10 +20,12 @@ public:
 	AWeapon();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AProjectile> ProjectilePrefab;
+	TSubclassOf<AActor> ProjectilePrefab;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float FireRate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float ReloadCooldown;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int MagSize;
 	
@@ -32,17 +34,18 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UArrowComponent* FirePoint;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprntReadOnly)
+	UPROPERTY(VisibleDefaultsOnly)
 	FTimerHandle CooldownTimer;
-	UPROPERTY(VisibleDefaultsOnly, BlueprntReadOnly)
+	UPROPERTY(VisibleDefaultsOnly)
 	FTimerHandle ReloadTimer;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int CurrentMag;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	int CurrentMag;
-
+	
 	bool CanShoot = true;
 
 public:	
@@ -54,5 +57,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Reload();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Reloading();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void ResetShootCooldown();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetBullet(int NumberOfBullet);
 };
