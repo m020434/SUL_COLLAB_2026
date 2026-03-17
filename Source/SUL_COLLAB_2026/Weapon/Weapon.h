@@ -62,4 +62,10 @@ public:
 	void ResetShootCooldown();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetBullet(int NumberOfBullet);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void ReloadAnimation();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void ShootingAnimation();
 };

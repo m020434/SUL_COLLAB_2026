@@ -152,6 +152,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void ChangeToDefaultHeight();
 	
+	
 	// Function for Dash
 	void EndDash();
 	void ResetDash();

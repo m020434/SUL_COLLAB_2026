@@ -34,6 +34,16 @@ void AWeapon::Tick(float DeltaTime)
 
 }
 
+void AWeapon::ShootingAnimation_Implementation()
+{
+	
+}
+
+void AWeapon::ReloadAnimation_Implementation()
+{
+	
+}
+
 void AWeapon::SetBullet_Implementation(int NumberOfBullet)
 {
 	CurrentMag = NumberOfBullet;
@@ -41,8 +51,7 @@ void AWeapon::SetBullet_Implementation(int NumberOfBullet)
 
 void AWeapon::Reloading_Implementation()
 {
-	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "Reload");
-
+	ReloadAnimation();
 	GetWorldTimerManager().SetTimer(ReloadTimer, this, &AWeapon::Reload, ReloadCooldown);
 }
 
@@ -66,9 +75,10 @@ void AWeapon::Shoot_Implementation()
 		FVector Location = FirePoint->GetComponentLocation();
 		FRotator Rotation = FirePoint->GetComponentRotation();
 		GetWorld()->SpawnActor(ProjectilePrefab, &Location, &Rotation);
-		GEngine->AddOnScreenDebugMessage(1, 0.1, FColor::Red, "pew");
 
 		CurrentMag--;
+
+		ShootingAnimation();
 		
 		if (CurrentMag <= 0)
 		{
