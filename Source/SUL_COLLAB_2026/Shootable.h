@@ -19,5 +19,5 @@ class SUL_COLLAB_2026_API IShootable
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual void RecieveHit(FVector HitLocation) = 0;
+	virtual void RecieveHit(FVector HitLocation);
 };

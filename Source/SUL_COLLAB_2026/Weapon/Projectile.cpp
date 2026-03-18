@@ -8,6 +8,8 @@
 #include "Components/StaticMeshComponent.h"
 
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "SUL_COLLAB_2026/Shootable.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -50,10 +52,11 @@ void AProjectile::BeginPlay()
 void AProjectile::ProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
-	OnHit(OtherActor);
+	
+	OnHit(OtherActor, Hit);
 }
 
-void AProjectile::OnHit_Implementation(AActor* OtherActor)
+void AProjectile::OnHit_Implementation(AActor* OtherActor, FHitResult HitResult)
 {
 	
 }
@@ -63,4 +66,16 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
+void AProjectile::Interface(AActor*OtherActor,  FHitResult HitResult)
+{
+	IShootable* Interface = Cast<IShootable>(OtherActor);
+	if (Interface)
+	{
+		Interface->RecieveHit(HitResult.ImpactPoint);
+	}
+}
+
+
+
 
