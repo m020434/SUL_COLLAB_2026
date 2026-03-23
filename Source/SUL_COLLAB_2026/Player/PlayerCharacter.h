@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "SUL_COLLAB_2026/BaseWildcard.h"
 #include "PlayerCharacter.generated.h"
 
 class AWeapon;
