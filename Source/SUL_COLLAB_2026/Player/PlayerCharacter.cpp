@@ -59,17 +59,28 @@
 	}
 #pragma endregion
 
+#pragma region WildCard
+	
+
+#pragma endregion
+
 #pragma region Shooting
 	void APlayerCharacter::DoShoot_Implementation(bool Input)
 	{
 		if (Gun != nullptr)
 		{
-			Gun->Shoot();
+			if (HaveGun)
+			{
+				Gun->Shoot();
+			}
 		}
 
 		else
 		{
-			GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "No Gun");
+			if (HaveGun)
+			{
+				GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "No Gun");
+			}
 		}
 	}
 
@@ -84,6 +95,12 @@
 		{
 			GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "No Gun");
 		}
+	}
+
+void APlayerCharacter::CreateGun_Implementation()
+	{
+		Gun->SetActorHiddenInGame(false);
+		HaveGun = true;
 	}
 
 

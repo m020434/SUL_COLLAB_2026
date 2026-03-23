@@ -28,8 +28,10 @@ void UHealthComponent::TakeDamage(int Damage)
 
 	if (CurrentHealth <= 0)
 	{
-		// Dead
-		//TODO: A Multicast delegate here would be a good idea, we want other things to know when we die.
+		if (PlayerDeath.IsBound())
+		{
+			PlayerDeath.Broadcast();
+		}
 	}
 
 	if (CurrentHealth >= MaxHealth)

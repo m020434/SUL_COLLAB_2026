@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "HealthComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerDeathDelegate);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SUL_COLLAB_2026_API UHealthComponent : public UActorComponent
@@ -15,6 +16,8 @@ class SUL_COLLAB_2026_API UHealthComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UHealthComponent();
+	UPROPERTY(BlueprintAssignable)
+	FPlayerDeathDelegate PlayerDeath;
 
 protected:
 	// Called when the game starts
@@ -24,6 +27,7 @@ protected:
 	int MaxHealth;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int CurrentHealth;
+	
 
 public:
 	UFUNCTION(BlueprintCallable)

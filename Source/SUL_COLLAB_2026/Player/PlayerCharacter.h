@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "SUL_COLLAB_2026/BaseWildcard.h"
 #include "PlayerCharacter.generated.h"
 
 class AWeapon;
@@ -50,7 +51,7 @@ public:
 
 	
 	// Health Component
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly)
 	UHealthComponent* HealthComp;
 
 	// Modifier for the Dash
@@ -84,6 +85,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gun")
 	AWeapon* Gun;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gun")
+	bool HaveGun = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WildCard")
+	ABaseWildcard* WildCard;
 	
 
 protected:
@@ -169,5 +175,9 @@ public:
 		void DoShoot(bool Input);
 		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void DoReload(bool Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void CreateGun();
 	#pragma endregion
+
+	
 };
