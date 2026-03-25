@@ -32,7 +32,6 @@
 		Super::BeginPlay();
 	
 		StoredFriction = GetCharacterMovement()->GroundFriction;
-		DefaultHeight = GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight();
 		StoredGravityScale = GetCharacterMovement()->GravityScale;
 	}
 
@@ -43,148 +42,164 @@
 
 		if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 		{
-			EIC->BindAction(MoveInputAction, ETriggerEvent::Triggered, this, FName("DoMove"));
-			EIC->BindAction(MoveInputAction,ETriggerEvent::Completed, this, FName("StopMove"));
-			EIC->BindAction(LookInputAction, ETriggerEvent::Triggered, this, FName("DoLook"));
-			EIC->BindAction(JumpInputAction, ETriggerEvent::Started, this, FName("DoJumpUp"));
+			#pragma region Movement
+				EIC->BindAction(MoveInputAction, ETriggerEvent::Triggered, this, FName("DoMove"));
+				EIC->BindAction(MoveInputAction,ETriggerEvent::Completed, this, FName("StopMove"));
+				EIC->BindAction(LookInputAction, ETriggerEvent::Triggered, this, FName("DoLook"));
+				EIC->BindAction(JumpInputAction, ETriggerEvent::Started, this, FName("DoJumpUp"));
+				
+				//Dash
+				EIC->BindAction(DashInputAction, ETriggerEvent::Started, this, FName("DoDash"));
+				EIC->BindAction(DashInputAction, ETriggerEvent::Completed, this, FName("StopDash"));
+				
+				//Slide
+				EIC->BindAction(SlideInputAction, ETriggerEvent::Started, this, FName("DoSlide"));
+				EIC->BindAction(SlideInputAction, ETriggerEvent::Completed, this, FName("StopSlide"));
+			#pragma endregion
+			
+			//Gun
 			EIC->BindAction(ShootInputAction, ETriggerEvent::Triggered, this, FName("DoShoot"));
 			EIC->BindAction(ReloadInputAction, ETriggerEvent::Started, this, FName("DoReload"));
-			
-			EIC->BindAction(DashInputAction, ETriggerEvent::Started, this, FName("DoDash"));
-			EIC->BindAction(DashInputAction, ETriggerEvent::Completed, this, FName("StopDash"));
-			
-			EIC->BindAction(SlideInputAction, ETriggerEvent::Started, this, FName("DoSlide"));
-			EIC->BindAction(SlideInputAction, ETriggerEvent::Completed, this, FName("StopSlide"));
 		}
 	}
 #pragma endregion
 
 #pragma region Shooting
-	void APlayerCharacter::DoShoot_Implementation(bool Input)
+	bool APlayerCharacter::CheckHasGun() //Error if we lack a gun.
 	{
-		if (Gun != nullptr)
-		{
-			Gun->Shoot();
-		}
-
-		else
+		if(Gun == nullptr)
 		{
 			GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "No Gun");
+			return false;
 		}
+		
+		return true;
+	}
+	
+	void APlayerCharacter::DoShoot_Implementation(bool Input)
+	{
+		if(!CheckHasGun()) return;
+		Gun->Shoot();
 	}
 
 	void APlayerCharacter::DoReload_Implementation(bool Input)
 	{
-		if (Gun != nullptr)
-		{
-			Gun->Reloading();
-		}
-
-		else
-		{
-			GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "No Gun");
-		}
+		if(!CheckHasGun()) return;		
+		Gun->Reloading();
 	}
-
-
 #pragma endregion
 
 #pragma region Slide
+	bool APlayerCharacter::CheckCanSlide()
+	{
+		return PlayerMovementState == PlayerMovementState::Walk && !GetCharacterMovement()->IsFalling() && PlayerInputDirection.X > 0 && CanSlide;
+	}
+
 	void APlayerCharacter::DoSlide_Implementation(bool Input)
 	{
-		if (PlayerMovementState != PlayerMovementState::Walk) return;
+		if(!CheckCanSlide()) return;
 		
-		if (!GetCharacterMovement()->IsFalling() && PlayerInputDirection.X > 0)
-		{
-			PlayerMovementAction = true;
-			if (CanSlide)
-			{
-				PlayerMovementState = PlayerMovementState::Slide;
-				SlideHeight = GetActorLocation().Z;
-				CanSlide = false;
-				Slide();
-				GetWorldTimerManager().SetTimer(EndSlideTimer, this, &APlayerCharacter::ReachMinimumSlide, MinSlideTime);
-				GetWorldTimerManager().SetTimer(SlideTimer, this, &APlayerCharacter::CheckSlide,GetWorld()->GetDeltaSeconds(), true);
-			}
-		}
+		PlayerSlideHeld = true;
+		Slide();
 	}
 
 	void APlayerCharacter::Slide_Implementation()
 	{
-		FVector Force = (GetActorForwardVector() * PlayerInputDirection.X) + (GetActorRightVector() * PlayerInputDirection.Y);
-		Force = UKismetMathLibrary::Normal(Force);
-		BrakingForce = -Force;
-		Force.Z = -1;
-		Force = Force*SlideForce;
-		SlidingForce = Force * 0.05f;
-		BrakingForce.Z = -10;
-		BrakingForce = BrakingForce * SlideForce * 0.005f;
+		#pragma region Slide & Brake forces
+			//Calculate Force Dir
+			FVector Force = (GetActorForwardVector() * PlayerInputDirection.X) + (GetActorRightVector() * PlayerInputDirection.Y);
+			Force = UKismetMathLibrary::Normal(Force);
+			
+			//scale by designer value, always downward
+			Force *= SlideForce;
+			Force.Z = -1;
+			SlidingForce = Force; //TODO: "SlidingForce" and "SlideForce" are 2 completely different variables. The name needs to be improved (e.g. SlideForceVec)
+			
+			//Brake opposite our slide, always down still.
+			BrakingForce = -SlidingForce*0.1f;
+			BrakingForce.Z = -1;
+			//NOTE: Slightly different behaviour from before, but I'm pretty sure the previous was a mistake & this still works fine in testing.
+		#pragma endregion
+		
+		//Set state
+		CanSlide = false;
 		MinSlide = false;
-		SlideTimeOnFloor = 0;
-		GetCharacterMovement()->GroundFriction = 0.5f;
-		ChangeToSlideHeight();
+		PlayerMovementState = PlayerMovementState::Slide;
+		LastSlideHeight = GetActorLocation().Z; //For calculating height delta in update
+		
+		//Set slide values
+		GetCharacterMovement()->GroundFriction = 0.5f;	//TODO: Magic number, that 0.5f should be a designer-exposed variable
 		GetCharacterMovement()->AddForce(Force);
-		GetWorldTimerManager().SetTimer(SlideCooldownTimer, this, &APlayerCharacter::ResetSlide, SlideCooldownTime);
-	}
-	
-	void APlayerCharacter::ChangeToSlideHeight_Implementation()
-	{
-	}
 
-	void APlayerCharacter::ChangeToDefaultHeight_Implementation()
-	{
+		//Set Timers
+		//TODO: Shouldn't this start when our slide ends (if we even want a cooldown)?
+		GetWorldTimerManager().SetTimer(SlideCooldownTimer, this, &APlayerCharacter::ResetSlide, SlideCooldownTime); //Delay until we can slide again.
+		GetWorldTimerManager().SetTimer(EndSlideTimer, this, &APlayerCharacter::ReachMinimumSlide, MinSlideTime);
+		GetWorldTimerManager().SetTimer(SlideTimer, this, &APlayerCharacter::UpdateSlide,GetWorld()->GetDeltaSeconds(), true);
+		
+		if(OnSlideStart.IsBound())
+		{
+			OnSlideStart.Broadcast();
+		}
 	}
 	
-	void APlayerCharacter::CheckSlide()
+	void APlayerCharacter::UpdateSlide()
 	{
-		float ChangeinHeight = GetActorLocation().Z - SlideHeight;
+		float ChangeinHeight = GetActorLocation().Z - LastSlideHeight;
 	
-		if (ChangeinHeight> 0.001f)
+		//Brake if we've gone upwards, apply slide force otherwise.
+		if (ChangeinHeight > 0.001f)
 		{
 			GetCharacterMovement()->AddForce(BrakingForce * ChangeinHeight);
 		}
-
-		if (ChangeinHeight < -0.001f&& !GetCharacterMovement()->IsFalling())
+		else if (ChangeinHeight < -0.001f && !GetCharacterMovement()->IsFalling())
 		{
 			GetCharacterMovement()->AddForce(SlidingForce);
 		}
 	
-		SlideHeight = GetActorLocation().Z;
+		LastSlideHeight = GetActorLocation().Z;
 	}
 
 	void APlayerCharacter::EndSlide()
 	{
-		if (MinSlide && !PlayerMovementAction)
+		/*		// ?
+		FRotator MoveDirection = FRotator(0.0f, GetControlRotation().Yaw, GetControlRotation().Roll);
+		GetMovementComponent()->AddInputVector(MoveDirection.RotateVector(FVector::ForwardVector) * PlayerInputDirection.X);
+		GetMovementComponent()->AddInputVector(MoveDirection.RotateVector(FVector::RightVector) * PlayerInputDirection.Y);
+		*/
+		
+		//Reset state
+		GetCharacterMovement()->GroundFriction = StoredFriction;
+		PlayerMovementState = PlayerMovementState::Walk;
+		GetWorldTimerManager().PauseTimer(SlideTimer);
+		
+		if(OnSlideEnd.IsBound())
 		{
-			FRotator MoveDirection = FRotator(0.0f, GetControlRotation().Yaw, GetControlRotation().Roll);
-			GetCharacterMovement()->GravityScale = StoredGravityScale;
-			GetMovementComponent()->AddInputVector(MoveDirection.RotateVector(FVector::ForwardVector) * PlayerInputDirection.X);
-			GetMovementComponent()->AddInputVector(MoveDirection.RotateVector(FVector::RightVector) * PlayerInputDirection.Y);
-			ChangeToDefaultHeight();
-			GetCharacterMovement()->GroundFriction = StoredFriction;
-			PlayerMovementState = PlayerMovementState::Walk;
-			GetWorldTimerManager().PauseTimer(SlideTimer);
+			OnSlideEnd.Broadcast();
 		}
 	}
 
 	void APlayerCharacter::ReachMinimumSlide()
 	{
 		MinSlide = true;
-		EndSlide();
-	}
-
-	void APlayerCharacter::ResetSlide()
-	{
-		CanSlide = true;
+		if(!PlayerSlideHeld)	//TODO: Would be better if this & StopSlide were a method
+		{
+			EndSlide();
+		}
 	}
 
 	void APlayerCharacter::StopSlide_Implementation()
 	{
-		PlayerMovementAction = false;
-		if (PlayerMovementState == PlayerMovementState::Slide)
+		PlayerSlideHeld = false;
+		if (PlayerMovementState == PlayerMovementState::Slide && MinSlide) //TODO: Would be better if this & ReachMinimumSlide were a method
 		{
 			EndSlide();
 		}
+	}
+	
+	void APlayerCharacter::ResetSlide() //End of cooldown
+	{
+			CanSlide = true;
 	}
 #pragma endregion
 
@@ -193,21 +208,55 @@
 	void APlayerCharacter::DoDash_Implementation(bool Input)
 	{
 		if(!(PlayerMovementState == PlayerMovementState::Walk && CanDash)) return;
-
-		StoredSpeed = GetCharacterMovement()->Velocity.Size();
+		
+		Dash();
+	}
+	
+	//Dash cancels all existing momentum and launches the player in the direction they're moving (or directly forward if they aren't moving)
+	void APlayerCharacter::Dash_Implementation()
+	{
+		//Set State
 		CanDash = false;
 		PlayerMovementState = PlayerMovementState::Dash;
-		Dash();
+		
+		//Values to reset to
+		StoredSpeed = GetCharacterMovement()->Velocity.Size();
+		
+		//Kill velocity / gravity
+		GetCharacterMovement()->Velocity = FVector(0, 0, 0);
+		GetCharacterMovement()->GravityScale = 0;
+
+		#pragma region Calculate Dash Force
+			FVector PlayerVelocity = FVector::Zero();
+			if (PlayerInputDirection != FVector2D::Zero())
+			{
+				FVector Velocity = (GetActorForwardVector() * PlayerInputDirection.X) + (GetActorRightVector() * PlayerInputDirection.Y);
+				PlayerVelocity = UKismetMathLibrary::Normal(Velocity) * DashSpeed;
+			}
+			else
+			{
+				PlayerVelocity = GetActorForwardVector() * DashSpeed;
+			}
+			PlayerVelocity.Z = 0;
+		#pragma endregion
+		
+		LaunchCharacter(PlayerVelocity, false, false);
+		
 		GetWorldTimerManager().SetTimer(DashTimer, this, &APlayerCharacter::EndDash, DashTime);
 	}
 
 	// End the dash, Reset velocity, turn on gravity, set a cooldown timer
 	void APlayerCharacter::EndDash()
 	{
-		FVector Velocity = UKismetMathLibrary::Normal(GetCharacterMovement()->Velocity);
-		GetCharacterMovement()->Velocity = Velocity*StoredSpeed;
+		//Return to the speed we had before dashing, but in our new direction.
+		FVector VelNormal = UKismetMathLibrary::Normal(GetCharacterMovement()->Velocity);
+		GetCharacterMovement()->Velocity = VelNormal*StoredSpeed;
+		
+		//Reset state
 		GetCharacterMovement()->GravityScale = StoredGravityScale;
 		PlayerMovementState = PlayerMovementState::Walk;
+		
+		//Cooldown
 		GetWorldTimerManager().SetTimer(DashCooldownTimer, this, &APlayerCharacter::ResetDash, DashCooldownTime);
 	}
 
@@ -217,38 +266,15 @@
 		CanDash = true;
 	}
 
-	// Dash, Calculated the velocity for the dash depending on the input pressed and turning of gravity so all other force
-	// does not affect the dash.
-	void APlayerCharacter::Dash_Implementation()
-	{
-		GetCharacterMovement()->Velocity = FVector(0, 0, 0);
-		GetCharacterMovement()->GravityScale = 0;
-
-		if (PlayerInputDirection != FVector2D::Zero())
-		{
-			FVector Velocity = (GetActorForwardVector() * PlayerInputDirection.X) + (GetActorRightVector() * PlayerInputDirection.Y);
-			PlayerVelocity = UKismetMathLibrary::Normal(Velocity) * DashSpeed;
-		}
-
-		else
-		{
-			PlayerVelocity = GetActorForwardVector() * DashSpeed;
-		}
-		
-		PlayerVelocity.Z = 0;
-		LaunchCharacter(PlayerVelocity, false, false);
-	}
-
 	void APlayerCharacter::StopDash_Implementation()
 	{
-		PlayerMovementAction = false;
 	}
 #pragma endregion
 
 #pragma region General Movement/Input
 	// Move the player
 	void APlayerCharacter::DoMove_Implementation(FVector2D Input)
-	{
+ 	{
 		PlayerInputDirection = Input;
 		if (PlayerMovementState != PlayerMovementState::Slide)
 		{
