@@ -48,7 +48,6 @@ public:
 	UInputAction* ReloadInputAction;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
 	UInputAction* SlideInputAction;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
 	UInputAction* UseCardInputAction;
 	
@@ -91,7 +90,7 @@ public:
 	bool HaveGun = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WildCard")
-	ABaseWildcard* WildCard;
+	ABaseWildcard* Wildcard;
 	
 
 protected:
@@ -176,5 +175,11 @@ public:
 		void CreateGun();
 	#pragma endregion
 
+	#pragma region Wildcard Methods
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void AcquireCard(AActor* OtherActor);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void DoUseCard();
 	
+	#pragma endregion
 };

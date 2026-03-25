@@ -64,8 +64,20 @@
 #pragma endregion
 
 #pragma region WildCard
-	
+	void APlayerCharacter::DoUseCard_Implementation()
+	{
+			
+	}
 
+	void APlayerCharacter::AcquireCard_Implementation(AActor* OtherActor)
+	{
+		GEngine->AddOnScreenDebugMessage(1, 2, FColor::Green, "Testing");
+		if (Wildcard == nullptr)
+		{
+			Wildcard = Cast<ABaseWildcard>(OtherActor);
+		}
+			
+	}
 #pragma endregion
 
 #pragma region Shooting
@@ -179,6 +191,7 @@ void APlayerCharacter::CreateGun_Implementation()
 	{
 		CanSlide = true;
 	}
+
 
 
 
