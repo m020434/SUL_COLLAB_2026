@@ -8,12 +8,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6190b19e-7bd7-47ce-a238-a8a3004c69cf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SUL_COLLAB_2026.dir/.idea/.name" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SUL_COLLAB_2026.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SUL_COLLAB_2026.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprint/DefaultBlueprint/BP_DefaultPlayerCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprint/DefaultBlueprint/BP_DefaultPlayerCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/DefaultBlueprint/BP_Gun.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprint/DefaultBlueprint/BP_Gun.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Component/HealthComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Component/HealthComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Component/HealthComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Component/HealthComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprint/Input/PlayerInput.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprint/Input/PlayerInput.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprint/Jason/BP_CardPickUp.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprint/Jason/BP_CardPickUp.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprint/Jason/BP_GunPickUp.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprint/Jason/BP_GunPickUp.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/Dev/Dev_Jason.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/Dev/Dev_Jason.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Player/PlayerCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Player/PlayerCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Player/PlayerCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Player/PlayerCharacter.h" afterDir="false" />
     </list>
@@ -53,23 +53,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Uproject.SUL_COLLAB_2026.executor": "Run",
-    "git-widget-placeholder": "WildcardManager(Jason)",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CppCodeGenerationId",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Uproject.SUL_COLLAB_2026.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;WildcardManager(Jason)&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CppCodeGenerationId&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="SUL_COLLAB_2026" type="Uproject" factoryName="rider.uproject">
       <configuration_1 setup="1">
@@ -195,6 +195,7 @@
       <workItem from="1772555973131" duration="941000" />
       <workItem from="1773074983646" duration="945000" />
       <workItem from="1774271759766" duration="6759000" />
+      <workItem from="1774532126044" duration="3008000" />
     </task>
     <servers />
   </component>
@@ -224,11 +225,6 @@
           <url>file://$PROJECT_DIR$/Source/SUL_COLLAB_2026/GameLogic/GameManager.h</url>
           <line>2</line>
           <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Source/SUL_COLLAB_2026/Player/PlayerCharacter.cpp</url>
-          <line>12</line>
-          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

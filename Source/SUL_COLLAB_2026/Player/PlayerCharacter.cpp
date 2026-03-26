@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "SUL_COLLAB_2026/Component/HealthComponent.h"
 #include "SUL_COLLAB_2026/Weapon/Weapon.h"
 
@@ -51,13 +52,8 @@
 			EIC->BindAction(DashInputAction, ETriggerEvent::Completed, this, FName("StopDashNSlide"));
 			EIC->BindAction(ShootInputAction, ETriggerEvent::Triggered, this, FName("DoShoot"));
 			EIC->BindAction(ReloadInputAction, ETriggerEvent::Started, this, FName("DoReload"));
-			
 			EIC->BindAction(DashInputAction, ETriggerEvent::Started, this, FName("DoDash"));
 			EIC->BindAction(DashInputAction, ETriggerEvent::Completed, this, FName("StopDash"));
-			
-			EIC->BindAction(SlideInputAction, ETriggerEvent::Started, this, FName("DoSlide"));
-			EIC->BindAction(SlideInputAction, ETriggerEvent::Completed, this, FName("StopSlide"));
-			
 			EIC->BindAction(UseCardInputAction, ETriggerEvent::Started, this, FName("DoUseCard"));
 		}
 	}
@@ -66,16 +62,15 @@
 #pragma region WildCard
 	void APlayerCharacter::DoUseCard_Implementation()
 	{
+		if (UKismetSystemLibrary::IsValid(Wildcard))
+		{
 			
+		}
 	}
 
 	void APlayerCharacter::AcquireCard_Implementation(AActor* OtherActor)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 2, FColor::Green, "Testing");
-		if (Wildcard == nullptr)
-		{
-			Wildcard = Cast<ABaseWildcard>(OtherActor);
-		}
+		Wildcard = Cast<ABaseWildcard>(OtherActor);
 			
 	}
 #pragma endregion
