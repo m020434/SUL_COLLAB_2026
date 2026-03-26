@@ -7,16 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6190b19e-7bd7-47ce-a238-a8a3004c69cf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SUL_COLLAB_2026.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SUL_COLLAB_2026.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/DefaultBlueprint/BP_DefaultPlayerCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprint/DefaultBlueprint/BP_DefaultPlayerCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/Input/PlayerInput.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprint/Input/PlayerInput.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/Jason/BP_CardPickUp.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprint/Jason/BP_CardPickUp.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/Jason/BP_GunPickUp.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprint/Jason/BP_GunPickUp.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Levels/Dev/Dev_Jason.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/Dev/Dev_Jason.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Player/PlayerCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Player/PlayerCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Player/PlayerCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/SUL_COLLAB_2026/Player/PlayerCharacter.h" afterDir="false" />
-    </list>
+    <list default="true" id="6190b19e-7bd7-47ce-a238-a8a3004c69cf" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
