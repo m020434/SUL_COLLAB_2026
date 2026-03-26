@@ -64,14 +64,13 @@
 	{
 		if (UKismetSystemLibrary::IsValid(Wildcard))
 		{
-			
+			Wildcard->OnWildcardActivate();
 		}
 	}
 
 	void APlayerCharacter::AcquireCard_Implementation(AActor* OtherActor)
 	{
 		Wildcard = Cast<ABaseWildcard>(OtherActor);
-			
 	}
 #pragma endregion
 
