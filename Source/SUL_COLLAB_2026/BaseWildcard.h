@@ -25,17 +25,19 @@ protected:
 	UPROPERTY(EditAnywhere) float Duration;
 	UPROPERTY(EditAnywhere) UTexture2D* CardTexture;
 	
-	// Blueprint Events
-	UFUNCTION(BlueprintImplementableEvent) void OnWildcardActivate();
-	UFUNCTION(BlueprintImplementableEvent) void OnWildcardEnd();
-
-	// Functions
-	UFUNCTION(BlueprintCallable) void RunWildcardTimer();
-
-	// Event Dispatcher
-	UPROPERTY(BlueprintCallable) F_WildcardFinished WildcardFinished;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	// Blueprint Events
+	UFUNCTION(BlueprintImplementableEvent) void OnWildcardActivate();
+	UFUNCTION(BlueprintImplementableEvent) void OnWildcardEnd();
+    
+	// Functions
+	UFUNCTION(BlueprintCallable) void RunWildcardTimer();
+    
+	// Event Dispatcher
+	UPROPERTY(BlueprintCallable) F_WildcardFinished WildcardFinished;
 
 };
