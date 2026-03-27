@@ -24,8 +24,7 @@ protected:
 	UPROPERTY(EditAnywhere) unsigned int Cost;
 	UPROPERTY(EditAnywhere) float Duration;
 	UPROPERTY(EditAnywhere) UTexture2D* CardTexture;
-	
-	
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -36,8 +35,8 @@ public:
     
 	// Functions
 	UFUNCTION(BlueprintCallable) void RunWildcardTimer();
-    
+	UFUNCTION(BlueprintCallable) void ActivateWildcard(); // Call this function to activate the wildcard.
+	
 	// Event Dispatcher
 	UPROPERTY(BlueprintCallable) F_WildcardFinished WildcardFinished;
-
 };
