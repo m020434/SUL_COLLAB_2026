@@ -34,7 +34,7 @@ public:
 	//Initialisation stuff
 	APlayerCharacter();
 
-	#pragma region Delegates
+#pragma region Delegates
 		UPROPERTY(BlueprintAssignable)
 		FOnSlideStart OnSlideStart;
 		UPROPERTY(BlueprintAssignable)
@@ -42,10 +42,15 @@ public:
 		
 		//TODO: Dash events
 	#pragma endregion
+	
 protected:
 	//Initialisation stuff
 	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	UFUNCTION()
+	void OnCharDestroyed(AActor* actor);
+	
 	
 	#pragma region Movement Methods
 		//Generic Movement Inputs
@@ -95,15 +100,18 @@ protected:
 		void DoReload(bool Input);
 	#pragma endregion
 
+	UFUNCTION()
+	void OnDeath();
+
 	// Variable Definitions start here ---------------------------------------------------------------------------------
 
 	#pragma region Components
 		UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UCameraComponent* CamComp;
-		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		UHealthComponent* HealthComp;
 		
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gun")
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Gun")
 		AWeapon* Gun;
 	#pragma endregion
 	

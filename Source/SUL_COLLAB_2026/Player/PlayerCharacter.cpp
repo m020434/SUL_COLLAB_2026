@@ -1,14 +1,22 @@
 
+//Generated
 #include "PlayerCharacter.h"
 #include "GameFramework/PawnMovementComponent.h"
-#include "InputAction.h"
+//Components
 #include "EnhancedInputComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "SUL_COLLAB_2026/Component/HealthComponent.h"
+//Other
 #include "SUL_COLLAB_2026/Weapon/Weapon.h"
+#include "InputAction.h"
+#include "SUL_COLLAB_2026/GameLogic/GameManager.h"
+//Libraries
+#include "Kismet/KismetMathLibrary.h"
+#include "SUL_COLLAB_2026/DEBUG/DB.h"
+#include "SUL_COLLAB_2026/GameLogic/GameManagement.h"
+
+
 
 #pragma region Initialisation
 	// Sets default values
@@ -24,6 +32,17 @@
 	
 		// Add the Health Component
 		HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+		
+		this->OnDestroyed.AddDynamic(this, &APlayerCharacter::OnCharDestroyed);
+	}
+	
+	void APlayerCharacter::OnCharDestroyed(AActor* actor)
+	{
+		//Clean up our objects
+		if(Gun != nullptr)
+		{
+			Gun->Destroy();
+		}
 	}
 	
 	// Called when the game starts or when spawned
@@ -33,6 +52,8 @@
 	
 		StoredFriction = GetCharacterMovement()->GroundFriction;
 		StoredGravityScale = GetCharacterMovement()->GravityScale;
+		
+		HealthComp->OnDead.AddDynamic(this, &APlayerCharacter::OnDeath); 
 	}
 
 	// Called to bind functionality to input
@@ -75,7 +96,7 @@
 		
 		return true;
 	}
-	
+
 	void APlayerCharacter::DoShoot_Implementation(bool Input)
 	{
 		if(!CheckHasGun()) return;
@@ -306,3 +327,10 @@
 		}
 	}
 #pragma endregion
+
+
+void APlayerCharacter::OnDeath()
+{
+	UGameManager* manager = UGameManagement::GetGameManager();
+	manager->OnPlayerDied(this);
+}

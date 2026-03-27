@@ -46,7 +46,10 @@ public:
 	#pragma region Events
 		UFUNCTION()
 		void OnLevelTimerExpired();
+		UFUNCTION()
+		void OnPlayerDied(APawn* playerPawn);
 	#pragma endregion
+	
 protected:
 	#pragma region Manager Refs
 		UPROPERTY()
