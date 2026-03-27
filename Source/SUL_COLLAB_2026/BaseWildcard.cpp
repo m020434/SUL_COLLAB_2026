@@ -22,6 +22,11 @@ void ABaseWildcard::RunWildcardTimer()
 		Duration);
 }
 
+void ABaseWildcard::ActivateWildcard()
+{
+	OnWildcardActivate();
+}
+
 // Called every frame
 void ABaseWildcard::Tick(float DeltaTime)
 {
