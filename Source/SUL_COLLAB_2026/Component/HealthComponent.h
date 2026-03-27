@@ -7,6 +7,8 @@
 #include "HealthComponent.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnDead);
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SUL_COLLAB_2026_API UHealthComponent : public UActorComponent
 {
@@ -16,18 +18,20 @@ public:
 	// Sets default values for this component's properties
 	UHealthComponent();
 
+	UFUNCTION(BlueprintCallable)
+	void SetHealth(int NewHealth);	
+
+	UPROPERTY(BlueprintAssignable)
+	F_OnDead OnDead;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	
+	UFUNCTION()
+	void TakeDamage(AActor* damagedActor, float damageAmount, const UDamageType* damageType, AController* eventInstigator, AActor* damageCauser);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	int MaxHealth;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int CurrentHealth;
-
-public:
-	UFUNCTION(BlueprintCallable)
-	void TakeDamage(int Damage);
-	UFUNCTION(BlueprintCallable)
-	void SetHealth(int NewHealth);
 };

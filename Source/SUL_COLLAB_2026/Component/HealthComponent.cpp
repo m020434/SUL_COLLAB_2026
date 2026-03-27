@@ -2,37 +2,39 @@
 
 
 #include "HealthComponent.h"
-//#include "Interfaces/IPluginManager.h"
-
 
 #pragma region Initialisation
 	// Sets default values for this component's properties
 	UHealthComponent::UHealthComponent()
 	{
 		MaxHealth = 3; //Default
+		CurrentHealth = MaxHealth;
 	}
 
 	// Called when the game starts
 	void UHealthComponent::BeginPlay()
 	{
 		Super::BeginPlay();
-		
 		CurrentHealth = MaxHealth;
+		
+		GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::TakeDamage);
 	}
 #pragma endregion
 
 
-void UHealthComponent::TakeDamage(int Damage)
+void UHealthComponent::TakeDamage(AActor* damagedActor, float damageAmount, const UDamageType* damageType, AController* eventInstigator, AActor* damageCauser)
 {
-	CurrentHealth -= Damage;
+	CurrentHealth -= damageAmount;
 
-	if (CurrentHealth <= 0)
+	if(CurrentHealth <= 0)
 	{
-		// Dead
-		//TODO: A Multicast delegate here would be a good idea, we want other things to know when we die.
+		if(OnDead.IsBound())
+		{
+			OnDead.Broadcast();
+		}
 	}
 
-	if (CurrentHealth >= MaxHealth)
+	if(CurrentHealth >= MaxHealth)
 	{
 		CurrentHealth = MaxHealth;
 	}
