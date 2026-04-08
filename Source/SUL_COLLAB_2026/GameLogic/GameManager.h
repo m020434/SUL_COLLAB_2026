@@ -49,7 +49,6 @@ public:
 		UFUNCTION()
 		void OnPlayerDied(APawn* playerPawn);
 	#pragma endregion
-	
 protected:
 	#pragma region Manager Refs
 		UPROPERTY()

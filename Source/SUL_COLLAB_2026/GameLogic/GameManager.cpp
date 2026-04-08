@@ -5,6 +5,7 @@
 #include "ManagerClasses/LevelTimeManager.h"
 #include "ManagerClasses/MultiplierManager.h"
 #include "ManagerClasses/ScoreManager.h"
+#include "SUL_COLLAB_2026/DEBUG/DB.h"
 
 
 #pragma region Initialisation/Deinitialisation
@@ -81,6 +82,7 @@ void UGameManager::UpdateManager(float dt) //TODO: For now this runs on-tick, bu
 		levelTimeManager->UpdateManager(dt);
 	}
 }
+
 
 #pragma region I/O
 	UScoreManager* UGameManager::GetScoreManager()

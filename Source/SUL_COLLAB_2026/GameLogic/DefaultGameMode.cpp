@@ -3,6 +3,9 @@
 
 #include "DefaultGameMode.h"
 #include "GameManager.h"
+#include "GameFramework/PlayerStart.h"
+#include "Kismet/GameplayStatics.h"
+#include "SUL_COLLAB_2026/DEBUG/DB.h"
 
 ADefaultGameMode::ADefaultGameMode()
 {
@@ -11,14 +14,20 @@ ADefaultGameMode::ADefaultGameMode()
 
 void ADefaultGameMode::BeginPlay()
 {
+	//Create manager
 	Super::BeginPlay();
 	gameManager = NewObject<UGameManager>();
 }
 
 void ADefaultGameMode::Tick(float dt)
 {
-	Super::Tick(dt);
-	
+	//Update managers
 	gameManager->UpdateManager(dt);
 }
 
+AActor* ADefaultGameMode::FindPlayerStart_Implementation(AController* Player, const FString& IncomingName)
+{
+	if(currentPlayerStart == nullptr) return Super::FindPlayerStart_Implementation(Player, "LevelStart");
+		
+	return currentPlayerStart;
+}
