@@ -13,6 +13,7 @@
 #include "SUL_COLLAB_2026/GameLogic/GameManager.h"
 //Libraries
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "SUL_COLLAB_2026/DEBUG/DB.h"
 #include "SUL_COLLAB_2026/GameLogic/GameManagement.h"
 
@@ -81,6 +82,9 @@
 			//Gun
 			EIC->BindAction(ShootInputAction, ETriggerEvent::Triggered, this, FName("DoShoot"));
 			EIC->BindAction(ReloadInputAction, ETriggerEvent::Started, this, FName("DoReload"));
+
+			EIC->BindAction(UseWildCardAction, ETriggerEvent::Started, this, FName("DoShoot"));
+			
 		}
 	}
 #pragma endregion
@@ -326,8 +330,22 @@
 			Jump();	
 		}
 	}
+
+	void APlayerCharacter::DoUseWildCard_Implementation(bool Input)
+	{
+		if (UKismetSystemLibrary::IsValid(CurrentWildcard))
+		{
+			CurrentWildcard->ActivateWildcard();
+		}
+	}
+
 #pragma endregion
 
+
+void APlayerCharacter::PickUpWildCard_Implementation(ABaseWildcard* WildCard)
+{
+		CurrentWildcard = WildCard;
+}
 
 void APlayerCharacter::OnDeath()
 {

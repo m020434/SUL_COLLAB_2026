@@ -101,6 +101,13 @@ protected:
 		void DoReload(bool Input);
 	#pragma endregion
 
+	#pragma region WildCard Methods
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void DoUseWildCard(bool Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void PickUpWildCard(ABaseWildcard* WildCard);
+	#pragma endregion
+	
 	UFUNCTION()
 	void OnDeath();
 
@@ -131,6 +138,8 @@ protected:
 		UInputAction* ReloadInputAction;
 		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
 		UInputAction* SlideInputAction;
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
+		UInputAction* UseWildCardAction;
 	#pragma endregion
 
 	#pragma region Dash Designer Variables
@@ -180,4 +189,7 @@ protected:
 	FVector SlidingForce;
 	FVector BrakingForce;
 	float LastSlideHeight;
+
+	// WildCard Variable
+	ABaseWildcard* CurrentWildcard;
 };
