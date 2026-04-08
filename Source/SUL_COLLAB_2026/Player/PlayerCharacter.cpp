@@ -83,7 +83,7 @@
 			EIC->BindAction(ShootInputAction, ETriggerEvent::Triggered, this, FName("DoShoot"));
 			EIC->BindAction(ReloadInputAction, ETriggerEvent::Started, this, FName("DoReload"));
 
-			EIC->BindAction(UseWildCardAction, ETriggerEvent::Started, this, FName("DoShoot"));
+			EIC->BindAction(UseWildCardAction, ETriggerEvent::Started, this, FName("DoUseWildCard"));
 			
 		}
 	}
@@ -92,7 +92,7 @@
 #pragma region Shooting
 	bool APlayerCharacter::CheckHasGun() //Error if we lack a gun.
 	{
-		if(Gun == nullptr)
+		if(Gun == nullptr || !HasGun)
 		{
 			GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "No Gun");
 			return false;
@@ -101,7 +101,7 @@
 		return true;
 	}
 
-	void APlayerCharacter::DoShoot_Implementation(bool Input)
+void APlayerCharacter::DoShoot_Implementation(bool Input)
 	{
 		if(!CheckHasGun()) return;
 		Gun->Shoot();
@@ -138,10 +138,10 @@
 			//scale by designer value, always downward
 			Force *= SlideForce;
 			Force.Z = -1;
-			SlidingForce = Force; //TODO: "SlidingForce" and "SlideForce" are 2 completely different variables. The name needs to be improved (e.g. SlideForceVec)
-			
+			DownSlideForce = Force;
+		
 			//Brake opposite our slide, always down still.
-			BrakingForce = -SlidingForce*0.1f;
+			BrakingForce = -DownSlideForce*0.1f;
 			BrakingForce.Z = -1;
 			//NOTE: Slightly different behaviour from before, but I'm pretty sure the previous was a mistake & this still works fine in testing.
 		#pragma endregion
@@ -153,12 +153,10 @@
 		LastSlideHeight = GetActorLocation().Z; //For calculating height delta in update
 		
 		//Set slide values
-		GetCharacterMovement()->GroundFriction = 0.5f;	//TODO: Magic number, that 0.5f should be a designer-exposed variable
+		GetCharacterMovement()->GroundFriction = SlideFiction;	
 		GetCharacterMovement()->AddForce(Force);
 
 		//Set Timers
-		//TODO: Shouldn't this start when our slide ends (if we even want a cooldown)?
-		GetWorldTimerManager().SetTimer(SlideCooldownTimer, this, &APlayerCharacter::ResetSlide, SlideCooldownTime); //Delay until we can slide again.
 		GetWorldTimerManager().SetTimer(EndSlideTimer, this, &APlayerCharacter::ReachMinimumSlide, MinSlideTime);
 		GetWorldTimerManager().SetTimer(SlideTimer, this, &APlayerCharacter::UpdateSlide,GetWorld()->GetDeltaSeconds(), true);
 		
@@ -179,7 +177,7 @@
 		}
 		else if (ChangeinHeight < -0.001f && !GetCharacterMovement()->IsFalling())
 		{
-			GetCharacterMovement()->AddForce(SlidingForce);
+			GetCharacterMovement()->AddForce(DownSlideForce);
 		}
 	
 		LastSlideHeight = GetActorLocation().Z;
@@ -202,6 +200,7 @@
 		{
 			OnSlideEnd.Broadcast();
 		}
+		GetWorldTimerManager().SetTimer(SlideCooldownTimer, this, &APlayerCharacter::ResetSlide, SlideCooldownTime); //Delay until we can slide again.
 	}
 
 	void APlayerCharacter::ReachMinimumSlide()
@@ -341,11 +340,17 @@
 
 #pragma endregion
 
-
-void APlayerCharacter::PickUpWildCard_Implementation(ABaseWildcard* WildCard)
-{
+#pragma region PickUp
+	void APlayerCharacter::PickUpWildCard_Implementation(ABaseWildcard* WildCard)
+	{
 		CurrentWildcard = WildCard;
-}
+	}
+
+	void APlayerCharacter::PickUpGun_Implementation()
+	{
+		
+	}
+#pragma endregion
 
 void APlayerCharacter::OnDeath()
 {

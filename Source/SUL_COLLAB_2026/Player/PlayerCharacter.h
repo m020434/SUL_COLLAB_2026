@@ -99,6 +99,8 @@ protected:
 		void DoShoot(bool Input);
 		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void DoReload(bool Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void PickUpGun();
 	#pragma endregion
 
 	#pragma region WildCard Methods
@@ -168,6 +170,8 @@ protected:
 		float SlideForce;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Slide")
 		float SlideCooldownTime;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Slide")
+		float SlideFiction;
 	#pragma endregion
 	
 	// Last WASD movement the player received, used for dash and slide.
@@ -186,10 +190,13 @@ protected:
 	bool CanSlide = true;
 	bool MinSlide = false;
 	float StoredFriction;
-	FVector SlidingForce;
+	FVector DownSlideForce;
 	FVector BrakingForce;
 	float LastSlideHeight;
 
 	// WildCard Variable
 	ABaseWildcard* CurrentWildcard;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool HasGun;
 };
