@@ -35,15 +35,10 @@ protected:
 	UFUNCTION()
 	void ProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 	// Called when the game starts or when spawned
-
 	
-
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION(BlueprintNativeEvent)
 	void OnHit(AActor*OtherActor, FHitResult HitResult);
-    
-    UFUNCTION(BlueprintCallable)
-    void Interface(AActor*OtherActor, FHitResult HitResult);
 };

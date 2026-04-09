@@ -21,6 +21,9 @@ public:
 		void SetScore(int newVal);
 		UFUNCTION(BlueprintCallable)
 		void ResetScore();
+		
+		UFUNCTION(BlueprintPure)
+		int GetScore();
 	#pragma endregion
 	
 	UPROPERTY(BlueprintAssignable)

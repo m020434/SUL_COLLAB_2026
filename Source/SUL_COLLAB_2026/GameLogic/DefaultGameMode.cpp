@@ -14,8 +14,9 @@ ADefaultGameMode::ADefaultGameMode()
 
 void ADefaultGameMode::BeginPlay()
 {
-	//Create manager
 	Super::BeginPlay();
+	
+	//Create manager
 	gameManager = NewObject<UGameManager>();
 }
 
@@ -28,6 +29,5 @@ void ADefaultGameMode::Tick(float dt)
 AActor* ADefaultGameMode::FindPlayerStart_Implementation(AController* Player, const FString& IncomingName)
 {
 	if(currentPlayerStart == nullptr) return Super::FindPlayerStart_Implementation(Player, "LevelStart");
-		
 	return currentPlayerStart;
 }

@@ -30,6 +30,11 @@ UScoreManager::UScoreManager()
 		
 		BroadcastScoreChange(oldScore);
 	}
+
+	int UScoreManager::GetScore()
+	{
+		return currentScore;
+	}
 #pragma endregion
 
 void UScoreManager::BroadcastScoreChange(int oldScore)

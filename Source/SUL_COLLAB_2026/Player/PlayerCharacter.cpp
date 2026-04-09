@@ -321,10 +321,9 @@
 	// Make the player Jump
 	void APlayerCharacter::DoJumpUp_Implementation(bool Input)
 	{
-		if (PlayerMovementState != PlayerMovementState::Slide)
-		{
-			Jump();	
-		}
+		Jump();	
+		if (PlayerMovementState == PlayerMovementState::Slide)
+			EndSlide();
 	}
 #pragma endregion
 

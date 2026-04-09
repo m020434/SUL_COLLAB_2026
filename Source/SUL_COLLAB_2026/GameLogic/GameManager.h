@@ -59,5 +59,6 @@ protected:
 		ULevelTimeManager* levelTimeManager;
 	#pragma endregion
 	
+	UPROPERTY(BlueprintReadOnly)
 	bool levelStarted;
 };

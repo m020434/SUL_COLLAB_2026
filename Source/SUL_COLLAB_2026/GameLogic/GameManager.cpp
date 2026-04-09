@@ -44,6 +44,11 @@
 	void UGameManager::LevelEnd()
 	{
 		levelStarted = false;
+		
+		multiplierManager->ResetMult();
+		levelTimeManager->ResetLevelTime();
+		scoreManager->ResetScore();
+		
 		if(onLevelStop.IsBound())
 		{
 			onLevelStop.Broadcast();
@@ -70,6 +75,11 @@
 			{
 				gm->RestartPlayer(playerController);
 			}
+		}
+		
+		if(levelStarted)
+		{
+			LevelEnd();
 		}
 	}
 #pragma endregion

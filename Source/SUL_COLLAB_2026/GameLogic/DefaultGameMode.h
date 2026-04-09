@@ -6,6 +6,8 @@
 
 class UGameManager;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnGameModeReady);
+
 UCLASS()
 class SUL_COLLAB_2026_API ADefaultGameMode : public AGameMode
 {
@@ -14,7 +16,7 @@ class SUL_COLLAB_2026_API ADefaultGameMode : public AGameMode
 	virtual void BeginPlay() override;
 	virtual void Tick(float dt) override;
 	
-
+	
 public:
 	UPROPERTY(BlueprintReadOnly)
 	UGameManager* gameManager; 
