@@ -34,7 +34,7 @@ public:
 	//Initialisation stuff
 	APlayerCharacter();
 
-#pragma region Delegates
+		#pragma region Delegates
 		UPROPERTY(BlueprintAssignable)
 		FOnSlideStart OnSlideStart;
 		UPROPERTY(BlueprintAssignable)
@@ -100,8 +100,13 @@ protected:
 		void DoReload(bool Input);
 	#pragma endregion
 
-	UFUNCTION()
-	void OnDeath();
+	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
+	
+	
+	#pragma region Events
+		UFUNCTION()
+		void OnDeath();
+	#pragma endregion
 
 	// Variable Definitions start here ---------------------------------------------------------------------------------
 

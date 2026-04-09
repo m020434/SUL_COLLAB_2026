@@ -278,7 +278,7 @@
 		PlayerMovementState = PlayerMovementState::Walk;
 		
 		//Cooldown
-		GetWorldTimerManager().SetTimer(DashCooldownTimer, this, &APlayerCharacter::ResetDash, DashCooldownTime);
+		//GetWorldTimerManager().SetTimer(DashCooldownTimer, this, &APlayerCharacter::ResetDash, DashCooldownTime);
 	}
 
 	// Reset the dash so the player can dash again
@@ -327,6 +327,16 @@
 	}
 #pragma endregion
 
+
+void APlayerCharacter::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
+{
+	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
+	
+	if(GetCharacterMovement()->MovementMode == MOVE_Walking)
+	{
+		ResetDash();
+	}
+}
 
 void APlayerCharacter::OnDeath()
 {
