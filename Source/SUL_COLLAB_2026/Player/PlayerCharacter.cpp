@@ -228,7 +228,7 @@
 	// The response to the dash input Press
 	void APlayerCharacter::DoDash_Implementation(bool Input)
 	{
-		if(!(PlayerMovementState == PlayerMovementState::Walk && CanDash)) return;
+		if(!(PlayerMovementState == PlayerMovementState::Walk && CanDash && GetCharacterMovement()->MovementMode != MOVE_Walking) ) return;
 		
 		Dash();
 	}
