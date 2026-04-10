@@ -6,6 +6,7 @@
 #include "ManagerClasses/MultiplierManager.h"
 #include "ManagerClasses/ScoreManager.h"
 #include "SUL_COLLAB_2026/DEBUG/DB.h"
+#include "SUL_COLLAB_2026/Player/PlayerCharacter.h"
 
 
 #pragma region Initialisation/Deinitialisation
@@ -60,6 +61,15 @@
 	void UGameManager::OnLevelTimerExpired()
 	{
 		LevelEnd();
+		
+		TArray<AActor*> foundActors; 
+		UGameplayStatics::GetAllActorsOfClass(GWorld, APlayerCharacter::StaticClass(), foundActors);
+		
+		AActor* player = foundActors[0];
+		if(player != nullptr)
+		{
+			OnPlayerDied(Cast<APawn>(player)); 
+		}
 	}
 	
 	void UGameManager::OnPlayerDied(APawn* playerPawn)

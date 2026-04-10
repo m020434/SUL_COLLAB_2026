@@ -32,6 +32,7 @@ public:
 	F_OnLevelTimerExpire onLevelTimerExpire;
 	
 protected:
+	UPROPERTY(BlueprintReadWrite)
 	float initialLevelTime; //How long the level is (to reset to)
 	float levelTimeRemaining;
 };
