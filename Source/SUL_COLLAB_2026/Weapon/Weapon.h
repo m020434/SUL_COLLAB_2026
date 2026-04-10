@@ -8,6 +8,7 @@
 
 class UStaticMeshComponent;
 class UArrowComponent;
+class USceneComponent;
 
 UCLASS()
 class SUL_COLLAB_2026_API AWeapon : public AActor
@@ -28,6 +29,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int MagSize;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	USceneComponent* SceneComponent;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UStaticMeshComponent* MeshComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)

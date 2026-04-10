@@ -11,8 +11,11 @@ AWeapon::AWeapon()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
+	SetRootComponent(SceneComponent);
+	
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	SetRootComponent(MeshComp);
+	MeshComp->SetupAttachment(GetRootComponent());
 
 	FirePoint = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePoint"));
 	FirePoint->SetupAttachment(GetRootComponent());
@@ -24,7 +27,6 @@ void AWeapon::BeginPlay()
 {
 	CurrentMag = MagSize;
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
