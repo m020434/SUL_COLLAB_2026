@@ -5,6 +5,7 @@
 #include "DefaultGameMode.generated.h"
 
 class UGameManager;
+class APlayerStart; 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnGameModeReady);
 
@@ -16,10 +17,9 @@ class SUL_COLLAB_2026_API ADefaultGameMode : public AGameMode
 	virtual void BeginPlay() override;
 	virtual void Tick(float dt) override;
 	
-	
 public:
 	UPROPERTY(BlueprintReadOnly)
-	UGameManager* gameManager; 
+	UGameManager* gameManager;
 	
 	UPROPERTY(BlueprintReadWrite)
 	APlayerStart* currentPlayerStart;

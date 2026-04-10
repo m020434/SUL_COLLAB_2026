@@ -28,6 +28,11 @@ void ADefaultGameMode::Tick(float dt)
 
 AActor* ADefaultGameMode::FindPlayerStart_Implementation(AController* Player, const FString& IncomingName)
 {
-	if(currentPlayerStart == nullptr) return Super::FindPlayerStart_Implementation(Player, "LevelStart");
+	if(currentPlayerStart == nullptr)
+	{
+		return Super::FindPlayerStart_Implementation(Player, "LevelStart");
+	}
+	
+	
 	return currentPlayerStart;
 }
