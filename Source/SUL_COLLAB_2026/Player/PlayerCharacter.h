@@ -6,6 +6,7 @@
 #include "PlayerCharacter.generated.h"
 
 class AWeapon;
+class ABaseWildcard;
 class UCameraComponent;
 class UInputAction;
 class UHealthComponent;
@@ -100,14 +101,22 @@ protected:
 		void DoReload(bool Input);
 	#pragma endregion
 
+	#pragma region Wildcard Methods
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void DoUseCard(bool Input);
+	#pragma endregion
+
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	
-	
+	#pragma region PickUp Method
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void PickUpWildCard(ABaseWildcard* NewWildcard);
+	#pragma endregion
 	#pragma region Events
 		UFUNCTION()
 		void OnDeath();
 	#pragma endregion
-
+	
 	// Variable Definitions start here ---------------------------------------------------------------------------------
 
 	#pragma region Components
@@ -118,6 +127,8 @@ protected:
 		
 		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Gun")
 		AWeapon* Gun;
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Wildcard")
+		ABaseWildcard* Wildcard;
 	#pragma endregion
 	
 	#pragma region Input
@@ -135,6 +146,8 @@ protected:
 		UInputAction* ReloadInputAction;
 		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
 		UInputAction* SlideInputAction;
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
+		UInputAction* UseCardInputAction;
 	#pragma endregion
 
 	#pragma region Dash Designer Variables
