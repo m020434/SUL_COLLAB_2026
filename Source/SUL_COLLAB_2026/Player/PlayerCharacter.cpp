@@ -117,10 +117,10 @@
 	}
 
 	void APlayerCharacter::DoSlide_Implementation(bool Input)
-	{
-		if(!CheckCanSlide()) return;
-		
+	{	
 		PlayerSlideHeld = true;
+		
+		if(!CheckCanSlide()) return;
 		Slide();
 	}
 
@@ -335,6 +335,12 @@ void APlayerCharacter::OnMovementModeChanged(EMovementMode PreviousMovementMode,
 	if(GetCharacterMovement()->MovementMode == MOVE_Walking)
 	{
 		ResetDash();
+		
+		//Slide if we're holding it & land on a valid surface.
+		if(PlayerSlideHeld && CheckCanSlide())
+		{
+			Slide();
+		}
 	}
 }
 
