@@ -4,6 +4,7 @@
 #include "UObject/Object.h"
 #include "MultiplierManager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(F_OnMultChanged, float, newMult, float, oldMult);
 
 UCLASS()
 class SUL_COLLAB_2026_API UMultiplierManager : public UObject
@@ -12,7 +13,6 @@ class SUL_COLLAB_2026_API UMultiplierManager : public UObject
 	
 public:
 	UMultiplierManager();
-	//void Mng_Init(); //BeginPlay
 	
 	void UpdateManager(float dt); //Allows us to control when this object thinks, so it can be paused/slowed/sped up.
 	
@@ -28,11 +28,14 @@ public:
 		float GetMult();
 	#pragma endregion
 	
+	UPROPERTY(BlueprintAssignable)
+	F_OnMultChanged onMultChanged;
+	
 protected:
+	void MultTickDown(); //Time ran out, reduce our multiplier.
+	
 	float currentMultiplier;
 	
 	float multTickInterval; //How long in-between ticks?
 	float multTimeRemaining; //Remaining mult time. Usually I'd use a timestamp, but I want it to be possible to freeze this. 
-	
-	void MultTickDown(); //Time ran out, reduce our multiplier.
 };
