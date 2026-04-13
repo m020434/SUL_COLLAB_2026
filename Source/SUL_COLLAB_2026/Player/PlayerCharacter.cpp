@@ -13,6 +13,7 @@
 #include "SUL_COLLAB_2026/GameLogic/GameManager.h"
 //Libraries
 #include "Kismet/KismetMathLibrary.h"
+#include "SUL_COLLAB_2026/BaseWildcard.h"
 #include "SUL_COLLAB_2026/DEBUG/DB.h"
 #include "SUL_COLLAB_2026/GameLogic/GameManagement.h"
 
@@ -81,6 +82,9 @@
 			//Gun
 			EIC->BindAction(ShootInputAction, ETriggerEvent::Triggered, this, FName("DoShoot"));
 			EIC->BindAction(ReloadInputAction, ETriggerEvent::Started, this, FName("DoReload"));
+
+			//Wildcard
+			EIC->BindAction(UseCardInputAction, ETriggerEvent::Started, this, FName("DoUseCard"));
 		}
 	}
 #pragma endregion
@@ -327,6 +331,23 @@
 	}
 #pragma endregion
 
+#pragma region Wildcard
+	void APlayerCharacter::DoUseCard_Implementation(bool Input)
+	{
+		if (Wildcard == nullptr) return;
+		Wildcard->ActivateWildcard();
+	}
+
+	
+#pragma endregion
+
+#pragma region PickUp 
+	void APlayerCharacter::PickUpWildCard_Implementation(ABaseWildcard* NewWildcard)
+	{
+		Wildcard = NewWildcard;
+	}
+
+#pragma endregion
 
 void APlayerCharacter::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
 {
@@ -343,6 +364,7 @@ void APlayerCharacter::OnMovementModeChanged(EMovementMode PreviousMovementMode,
 		}
 	}
 }
+
 
 void APlayerCharacter::OnDeath()
 {
