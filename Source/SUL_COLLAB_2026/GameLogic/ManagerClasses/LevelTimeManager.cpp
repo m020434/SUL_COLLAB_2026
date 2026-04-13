@@ -12,6 +12,10 @@
 void ULevelTimeManager::UpdateManager(float dt)
 {
 	levelTimeRemaining -= dt;
+	if(onLevelTimerUpdate.IsBound())
+	{
+		onLevelTimerUpdate.Broadcast();
+	}
 	
 	if(levelTimeRemaining <= 0)
 	{
@@ -28,16 +32,29 @@ void ULevelTimeManager::UpdateManager(float dt)
 	void ULevelTimeManager::SetLevelTime(float time) //Probably shouldn't be used, but the option is there.
 	{
 		levelTimeRemaining = time;
+		
+		if(onLevelTimerUpdate.IsBound())
+		{
+			onLevelTimerUpdate.Broadcast();
+		}
 	}
 
 	void ULevelTimeManager::ResetLevelTime()
 	{
 		levelTimeRemaining = initialLevelTime;
+		if(onLevelTimerUpdate.IsBound())
+		{
+			onLevelTimerUpdate.Broadcast();
+		}
 	}
 
 	void ULevelTimeManager::AddLevelTime(float amount)
 	{
 		levelTimeRemaining += amount;
+		if(onLevelTimerUpdate.IsBound())
+		{
+			onLevelTimerUpdate.Broadcast();
+		}
 	}
 
 	float ULevelTimeManager::GetLevelTime()

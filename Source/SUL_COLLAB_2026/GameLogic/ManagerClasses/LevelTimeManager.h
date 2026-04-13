@@ -5,6 +5,7 @@
 #include "LevelTimeManager.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnLevelTimerExpire);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnLevelTimerTick);
 
 UCLASS()
 class SUL_COLLAB_2026_API ULevelTimeManager : public UObject
@@ -30,7 +31,8 @@ public:
 	
 	UPROPERTY(BlueprintAssignable)
 	F_OnLevelTimerExpire onLevelTimerExpire;
-	
+	UPROPERTY(BlueprintAssignable) //Only runs while the timer is running
+	F_OnLevelTimerTick onLevelTimerUpdate;
 protected:
 	UPROPERTY(BlueprintReadWrite)
 	float initialLevelTime; //How long the level is (to reset to)
