@@ -26,6 +26,10 @@ class UHealthComponent;
 	};
 #pragma endregion
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnShoot);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnReload);
+
 UCLASS()
 class SUL_COLLAB_2026_API APlayerCharacter : public ACharacter
 {
@@ -99,6 +103,8 @@ protected:
 		void DoShoot(bool Input);
 		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void DoReload(bool Input);
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void PickUpGun();
 	#pragma endregion
 
 	#pragma region Wildcard Methods
@@ -177,6 +183,15 @@ protected:
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Slide")
 		float SlideCooldownTime;
 	#pragma endregion
+
+	#pragma region Gun Designer Variable
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gun")
+		bool HasGun = true;
+		UPROPERTY(BlueprintAssignable)
+		F_OnShoot OnShoot;
+		UPROPERTY(BlueprintAssignable)
+		F_OnReload OnReload;
+	#pragma endregion
 	
 	// Last WASD movement the player received, used for dash and slide.
 	FVector2D PlayerInputDirection = FVector2D::Zero();
@@ -197,4 +212,6 @@ protected:
 	FVector SlidingForce;
 	FVector BrakingForce;
 	float LastSlideHeight;
+
+	
 };

@@ -53,6 +53,7 @@ void AWeapon::SetBullet_Implementation(int NumberOfBullet)
 
 void AWeapon::Reloading_Implementation()
 {
+	if (CurrentMag >= MagSize) return;
 	ReloadAnimation();
 	GetWorldTimerManager().SetTimer(ReloadTimer, this, &AWeapon::Reload, ReloadCooldown);
 }
@@ -74,13 +75,15 @@ void AWeapon::Shoot_Implementation()
 	{
 		CanShoot = false;
 
+		ShootingAnimation();
+		
 		FVector Location = FirePoint->GetComponentLocation();
 		FRotator Rotation = FirePoint->GetComponentRotation();
 		GetWorld()->SpawnActor(ProjectilePrefab, &Location, &Rotation);
 
 		CurrentMag--;
 
-		ShootingAnimation();
+		
 		
 		if (CurrentMag <= 0)
 		{
