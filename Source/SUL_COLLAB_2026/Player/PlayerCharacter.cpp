@@ -92,7 +92,7 @@
 #pragma region Shooting
 	bool APlayerCharacter::CheckHasGun() //Error if we lack a gun.
 	{
-		if(Gun == nullptr)
+		if(Gun == nullptr || !HasGun)
 		{
 			GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "No Gun");
 			return false;
@@ -105,13 +105,22 @@
 	{
 		if(!CheckHasGun()) return;
 		Gun->Shoot();
+		if (OnShoot.IsBound())
+		{
+			OnShoot.Broadcast();
+		}
 	}
 
 	void APlayerCharacter::DoReload_Implementation(bool Input)
 	{
 		if(!CheckHasGun()) return;		
 		Gun->Reloading();
+		if (OnReload.IsBound())
+		{
+			OnReload.Broadcast();
+		}
 	}
+
 #pragma endregion
 
 #pragma region Slide
@@ -347,7 +356,13 @@
 		Wildcard = NewWildcard;
 	}
 
+	
+	void APlayerCharacter::PickUpGun_Implementation()
+	{
+		
+	}
 #pragma endregion
+
 
 void APlayerCharacter::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
 {
