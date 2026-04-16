@@ -213,5 +213,7 @@ protected:
 	FVector BrakingForce;
 	float LastSlideHeight;
 
-	
-};
+	//Jump buffering
+	float LastJumpPressTime = 0.0f;
+	UPROPERTY(EditDefaultsOnly) float JumpBufferTime;
+};	

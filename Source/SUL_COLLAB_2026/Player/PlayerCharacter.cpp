@@ -16,7 +16,8 @@
 #include "SUL_COLLAB_2026/BaseWildcard.h"
 #include "SUL_COLLAB_2026/DEBUG/DB.h"
 #include "SUL_COLLAB_2026/GameLogic/GameManagement.h"
-
+#include "GameTime.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 #pragma region Initialisation
@@ -25,6 +26,8 @@
 	{
 		// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 		PrimaryActorTick.bCanEverTick = true;
+		
+		JumpBufferTime = 0.15f;
 	
 		// Create a Camera Component
 		CamComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -334,7 +337,9 @@
 	// Make the player Jump
 	void APlayerCharacter::DoJumpUp_Implementation(bool Input)
 	{
-		Jump();	
+		LastJumpPressTime = UKismetSystemLibrary::GetGameTimeInSeconds(GetWorld());
+		
+		Jump();
 		if (PlayerMovementState == PlayerMovementState::Slide)
 			EndSlide();
 	}
@@ -376,6 +381,13 @@ void APlayerCharacter::OnMovementModeChanged(EMovementMode PreviousMovementMode,
 		if(PlayerSlideHeld && CheckCanSlide())
 		{
 			Slide();
+		}
+		
+		//Jump Buffering
+		float curTime = UKismetSystemLibrary::GetGameTimeInSeconds(GetWorld());
+		if( (curTime - LastJumpPressTime) < JumpBufferTime )
+		{
+			Jump();
 		}
 	}
 }
