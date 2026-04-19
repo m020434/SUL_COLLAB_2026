@@ -88,6 +88,9 @@
 
 			//Wildcard
 			EIC->BindAction(UseCardInputAction, ETriggerEvent::Started, this, FName("DoUseCard"));
+
+			//OnPause
+			EIC->BindAction(PauseAction, ETriggerEvent::Started, this, FName("OnPause"));
 		}
 	}
 #pragma endregion
@@ -397,4 +400,12 @@ void APlayerCharacter::OnDeath()
 {
 	UGameManager* manager = UGameManagement::GetGameManager();
 	manager->OnPlayerDied(this);
+}
+
+void APlayerCharacter::OnPause_Implementation()
+{
+	if (OnPausing.IsBound())
+	{
+		OnPausing.Broadcast();
+	}
 }

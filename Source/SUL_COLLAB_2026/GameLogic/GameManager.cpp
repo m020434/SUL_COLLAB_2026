@@ -84,6 +84,7 @@
 			if(ADefaultGameMode* gm = Cast<ADefaultGameMode>(UGameplayStatics::GetGameMode(GWorld )) )
 			{
 				gm->RestartPlayer(playerController);
+				gm->InvokeBinding();
 			}
 		}
 		
