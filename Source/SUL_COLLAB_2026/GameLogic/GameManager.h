@@ -11,6 +11,8 @@ class ULevelTimeManager;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnLevelStart);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnLevelStop);
 
+
+
 UCLASS()
 class SUL_COLLAB_2026_API UGameManager : public UObject
 {

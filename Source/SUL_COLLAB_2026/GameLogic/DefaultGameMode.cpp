@@ -36,3 +36,12 @@ AActor* ADefaultGameMode::FindPlayerStart_Implementation(AController* Player, co
 	
 	return currentPlayerStart;
 }
+
+void ADefaultGameMode::InvokeBinding()
+{
+	if (OnPlayerRespawn.IsBound())
+	{
+		OnPlayerRespawn.Broadcast();
+	}
+}
+

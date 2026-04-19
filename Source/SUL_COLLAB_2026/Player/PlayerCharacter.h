@@ -24,11 +24,19 @@ class UHealthComponent;
 		Slide UMETA(DisplayName = "Slide"),
 		Dash UMETA(DisplayName = "Dash")
 	};
+
+	//Pause
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPause);
+
+	//Shoot	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnShoot);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnReload);
+
+
 #pragma endregion
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnShoot);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnReload);
+
 
 UCLASS()
 class SUL_COLLAB_2026_API APlayerCharacter : public ACharacter
@@ -121,6 +129,8 @@ protected:
 	#pragma region Events
 		UFUNCTION()
 		void OnDeath();
+		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void OnPause();
 	#pragma endregion
 	
 	// Variable Definitions start here ---------------------------------------------------------------------------------
@@ -154,6 +164,8 @@ protected:
 		UInputAction* SlideInputAction;
 		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
 		UInputAction* UseCardInputAction;
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Input")
+		UInputAction* PauseAction;
 	#pragma endregion
 
 	#pragma region Dash Designer Variables
@@ -216,4 +228,7 @@ protected:
 	//Jump buffering
 	float LastJumpPressTime = 0.0f;
 	UPROPERTY(EditDefaultsOnly) float JumpBufferTime;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnPause OnPausing;
 };	
