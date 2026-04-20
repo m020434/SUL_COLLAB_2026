@@ -19,6 +19,8 @@ public:
 	
 	void ReceiveShot(FVector HitLocation);
 protected:
+	float LastHit;
+
 	virtual void BeginPlay() override;
 	void SetUpComponents();
 
