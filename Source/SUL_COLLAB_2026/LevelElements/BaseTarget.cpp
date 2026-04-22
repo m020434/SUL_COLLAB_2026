@@ -1,5 +1,6 @@
 #include "BaseTarget.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "SUL_COLLAB_2026/DEBUG/DB.h"
 
 // Sets default values
@@ -33,11 +34,17 @@ void ABaseTarget::SetUpComponents()
 
 void ABaseTarget::ReceiveShot(FVector HitLocation)
 {
+	float worldTime = UKismetSystemLibrary::GetGameTimeInSeconds(GetWorld());
+	if(LastHit + 0.01f > worldTime) return; //Protection from double-collision
+	
+	//LastHit
 	// Get distance from centre and hit position.
 	float HitAccuracy = FVector::Dist(HitLocation, GetActorLocation());
 
 	// Call the event.
 	OnTargetHit(HitAccuracy);
+	
+	LastHit = worldTime;
 }
 
 float ABaseTarget::CalculateAccuracyBonus(UCurveFloat* Curve, float HitAccuracy)
