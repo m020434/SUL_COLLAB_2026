@@ -24,6 +24,7 @@ void ABaseWildcard::RunWildcardTimer()
 
 void ABaseWildcard::ActivateWildcard()
 {
+	IsActivated = true;
 	OnWildcardActivate();
 }
 

@@ -118,6 +118,8 @@ protected:
 	#pragma region Wildcard Methods
 		UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void DoUseCard(bool Input);
+		UFUNCTION()
+		void DestroyCard(); // This function is called when the wildcard calls the "WildcardFinished" event dispatcher.
 	#pragma endregion
 
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;

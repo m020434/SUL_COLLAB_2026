@@ -28,6 +28,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	// Variables
+	bool IsActivated = false;
 	
 	// Blueprint Events
 	UFUNCTION(BlueprintImplementableEvent) void OnWildcardActivate();
