@@ -1,5 +1,6 @@
 #include "BaseTarget.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "SUL_COLLAB_2026/DEBUG/DB.h"
 
@@ -41,8 +42,20 @@ void ABaseTarget::ReceiveShot(FVector HitLocation)
 	// Get distance from centre and hit position.
 	float HitAccuracy = FVector::Dist(HitLocation, GetActorLocation());
 
+	#pragma region Calculate Scale multiplier
+		//There has to be some way to grab these values from the transform directly, but FTransform seems to be completely undocumented (Thanks Epic), so this is the *working* way I've found.
+		FTransform transform = GetTransform();	
+		FVector pos;
+		FRotator ang;
+		FVector scale;
+		UKismetMathLibrary::BreakTransform(transform, pos, ang, scale);
+
+		//If these values are different design-wise behaviour is essentially undefined, so the max works well enough.
+		float fScale = UKismetMathLibrary::Max(UKismetMathLibrary::Max(scale.X, scale.Y), scale.Z);
+	#pragma endregion
+
 	// Call the event.
-	OnTargetHit(HitAccuracy);
+	OnTargetHit(HitAccuracy / fScale);
 	
 	LastHit = worldTime;
 }
