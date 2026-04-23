@@ -128,7 +128,7 @@
 	}
 
 #pragma endregion
-
+	
 #pragma region Slide
 	bool APlayerCharacter::CheckCanSlide()
 	{
@@ -352,16 +352,23 @@
 	void APlayerCharacter::DoUseCard_Implementation(bool Input)
 	{
 		if (Wildcard == nullptr) return;
+		if (Wildcard->IsActivated) return;
 		Wildcard->ActivateWildcard();
 	}
 
-	
+	void APlayerCharacter::DestroyCard()
+	{
+		Wildcard->WildcardFinished.RemoveDynamic(this, &APlayerCharacter::DestroyCard);
+		Wildcard->Destroy();
+		//UE_LOG(LogTemp, Display, TEXT("Current Wildcard: %s"), *Wildcard->GetName());
+	}
 #pragma endregion
 
 #pragma region PickUp 
 	void APlayerCharacter::PickUpWildCard_Implementation(ABaseWildcard* NewWildcard)
 	{
 		Wildcard = NewWildcard;
+		Wildcard->WildcardFinished.AddDynamic(this, &APlayerCharacter::DestroyCard);
 	}
 
 	
