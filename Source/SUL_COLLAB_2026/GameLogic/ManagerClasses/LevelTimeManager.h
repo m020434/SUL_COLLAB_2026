@@ -37,4 +37,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	float initialLevelTime; //How long the level is (to reset to)
 	float levelTimeRemaining;
+	
+	UPROPERTY(BlueprintReadWrite)
+	float timeForgiveStart;
+	UPROPERTY(BlueprintReadWrite)
+	float timeForgiveRatio;
 };

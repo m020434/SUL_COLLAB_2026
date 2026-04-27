@@ -4,6 +4,9 @@
 #pragma region Initialisation
 	ULevelTimeManager::ULevelTimeManager()
 	{
+		timeForgiveStart = 1.5f;
+		timeForgiveRatio = 0.95f;
+		
 		initialLevelTime = 60.0f*2.5f; //2.5 min
 		levelTimeRemaining = initialLevelTime;
 	}
@@ -11,7 +14,13 @@
 
 void ULevelTimeManager::UpdateManager(float dt)
 {
-	levelTimeRemaining -= dt;
+	float decrAmnt = dt;
+	if(levelTimeRemaining < timeForgiveStart) //Very slight slow-down for the last second
+	{
+		decrAmnt *= timeForgiveRatio; 
+	}
+	levelTimeRemaining -= decrAmnt;
+	
 	if(onLevelTimerUpdate.IsBound())
 	{
 		onLevelTimerUpdate.Broadcast();
