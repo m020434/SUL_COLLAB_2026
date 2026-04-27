@@ -128,7 +128,7 @@
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.6\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\m020434o\Desktop\SUL_COLLAB_2026\SUL_COLLAB_2026.uproject&quot;" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\d019581n\Documents\GitHub\SUL_COLLAB_2026\SUL_COLLAB_2026.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.6" />
         <option name="PASS_PARENT_ENVS" value="1" />
@@ -140,7 +140,7 @@
         <option name="CONFIGURATION" value="DebugGame" />
         <option name="PLATFORM" value="Android" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\l020586l\Documents\GitHub\SUL_COLLAB_2026\Binaries\Android\SUL_COLLAB_2026-Android-DebugGame.so" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\d019581n\Documents\GitHub\SUL_COLLAB_2026\Binaries\Android\SUL_COLLAB_2026-Android-DebugGame.so" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.6" />
@@ -153,7 +153,7 @@
         <option name="CONFIGURATION" value="DebugGame" />
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\m020434o\Desktop\SUL_COLLAB_2026\Binaries\Win64\SUL_COLLAB_2026-Win64-DebugGame.exe" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\d019581n\Documents\GitHub\SUL_COLLAB_2026\Binaries\Win64\SUL_COLLAB_2026-Win64-DebugGame.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.6" />
@@ -167,7 +167,7 @@
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.6\Engine\Binaries\Win64\UnrealEditor.exe" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\m020434o\Desktop\SUL_COLLAB_2026\SUL_COLLAB_2026.uproject&quot;" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\d019581n\Documents\GitHub\SUL_COLLAB_2026\SUL_COLLAB_2026.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.6" />
         <option name="PASS_PARENT_ENVS" value="1" />
@@ -179,7 +179,7 @@
         <option name="CONFIGURATION" value="Development" />
         <option name="PLATFORM" value="Android" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\l020586l\Documents\GitHub\SUL_COLLAB_2026\Binaries\Android\SUL_COLLAB_2026.so" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\d019581n\Documents\GitHub\SUL_COLLAB_2026\Binaries\Android\SUL_COLLAB_2026.so" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.6" />
@@ -192,7 +192,7 @@
         <option name="CONFIGURATION" value="Development" />
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\m020434o\Desktop\SUL_COLLAB_2026\Binaries\Win64\SUL_COLLAB_2026.exe" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\d019581n\Documents\GitHub\SUL_COLLAB_2026\Binaries\Win64\SUL_COLLAB_2026.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.6" />
@@ -205,7 +205,7 @@
         <option name="CONFIGURATION" value="Shipping" />
         <option name="PLATFORM" value="Android" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\l020586l\Documents\GitHub\SUL_COLLAB_2026\Binaries\Android\SUL_COLLAB_2026-Android-Shipping.so" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\d019581n\Documents\GitHub\SUL_COLLAB_2026\Binaries\Android\SUL_COLLAB_2026-Android-Shipping.so" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.6" />
@@ -218,7 +218,7 @@
         <option name="CONFIGURATION" value="Shipping" />
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\m020434o\Desktop\SUL_COLLAB_2026\Binaries\Win64\SUL_COLLAB_2026-Win64-Shipping.exe" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\d019581n\Documents\GitHub\SUL_COLLAB_2026\Binaries\Win64\SUL_COLLAB_2026-Win64-Shipping.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.6" />
