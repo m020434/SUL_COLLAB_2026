@@ -113,7 +113,7 @@
     "Uproject.SUL_COLLAB_2026.executor": "Debug",
     "cidr.known.project.marker": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "Rebasing Martin-(OfficePass27-04)",
+    "git-widget-placeholder": "Martin-(OfficePass27-04)",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -137,6 +137,7 @@
       <workItem from="1777289927231" duration="86000" />
       <workItem from="1777290038272" duration="1193000" />
       <workItem from="1777379035539" duration="178000" />
+      <workItem from="1777465839603" duration="2084000" />
     </task>
     <servers />
   </component>
