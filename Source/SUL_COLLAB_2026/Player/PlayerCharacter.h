@@ -15,7 +15,19 @@ class UHealthComponent;
 	//Slide events
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSlideStart);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSlideEnd);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FIsSliding);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FIsNotSliding);
 
+	//For Jump
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnJump);
+	//For Dash
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDash);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStopDash);
+
+	//For Walking
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWalking);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStopWalking);
+	
 	//State Machine Enum
 	UENUM(BlueprintType)
 	enum PlayerMovementState
@@ -32,6 +44,8 @@ class UHealthComponent;
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnShoot);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnReload);
 
+	//PickUp Card
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_PickUpCard);
 
 #pragma endregion
 
@@ -52,8 +66,27 @@ public:
 		FOnSlideStart OnSlideStart;
 		UPROPERTY(BlueprintAssignable)
 		FOnSlideEnd OnSlideEnd;
+		UPROPERTY(BlueprintAssignable)
+		FIsSliding IsSliding;
+		UPROPERTY(BlueprintAssignable)
+		FIsNotSliding IsNotSliding;
+	
+		UPROPERTY(BlueprintAssignable)
+		FOnDash OnDash;
+		UPROPERTY(BlueprintAssignable)
+		FOnStopDash OnStopDash;
+
+		UPROPERTY(BlueprintAssignable)
+		FOnJump OnJump;
+
+		UPROPERTY(BlueprintAssignable)
+		FOnWalking OnWalking;
+		UPROPERTY(BlueprintAssignable)
+		FStopWalking StopWalking;
+
+		UPROPERTY(BlueprintAssignable)
+		F_PickUpCard PickUpCard;
 		
-		//TODO: Dash events
 	#pragma endregion
 	
 protected:
@@ -221,6 +254,7 @@ protected:
 	// Slide Variables
 	bool PlayerSlideHeld = false;
 	bool CanSlide = true;
+	bool IsSlideDown;
 	bool MinSlide = false;
 	float StoredFriction;
 	FVector SlidingForce;

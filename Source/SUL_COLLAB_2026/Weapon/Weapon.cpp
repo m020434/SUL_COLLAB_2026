@@ -54,18 +54,22 @@ void AWeapon::SetBullet_Implementation(int NumberOfBullet)
 void AWeapon::Reloading_Implementation()
 {
 	if (CurrentMag >= MagSize) return;
+	if (InReload) return;
 	ReloadAnimation();
 	GetWorldTimerManager().SetTimer(ReloadTimer, this, &AWeapon::Reload, ReloadCooldown);
+	InReload = true;
 }
 
 void AWeapon::ResetShootCooldown_Implementation()
 {
 	CanShoot = true;
+	
 }
 
 void AWeapon::Reload_Implementation()
 {
 	CurrentMag = MagSize;
+	InReload = false;
 	ResetShootCooldown();
 }
 
@@ -87,7 +91,7 @@ void AWeapon::Shoot_Implementation()
 		
 		if (CurrentMag <= 0)
 		{
-			Reloading();
+			GetWorldTimerManager().SetTimer(CooldownTimer, this, &AWeapon::Reloading, FireRate);
 		}
 
 		else
