@@ -15,6 +15,10 @@ class UHealthComponent;
 	//Slide events
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSlideStart);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSlideEnd);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSliding);
+
+	// For Jump
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnJump);
 
 	//State Machine Enum
 	UENUM(BlueprintType)
@@ -52,6 +56,10 @@ public:
 		FOnSlideStart OnSlideStart;
 		UPROPERTY(BlueprintAssignable)
 		FOnSlideEnd OnSlideEnd;
+		UPROPERTY(BlueprintAssignable)
+		FSliding OnSliding;
+		UPROPERTY(BlueprintAssignable)
+		FOnJump OnJump;
 		
 		//TODO: Dash events
 	#pragma endregion

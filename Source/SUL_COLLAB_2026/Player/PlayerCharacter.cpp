@@ -196,6 +196,18 @@
 		{
 			GetCharacterMovement()->AddForce(SlidingForce);
 		}
+
+		FVector2D HorizotalVelocity = FVector2D(GetCharacterMovement()->Velocity.X,GetCharacterMovement()->Velocity.Y);
+
+		float HorizotalSpeed = HorizotalVelocity.Length();
+		
+		if (GetCharacterMovement()->IsMovingOnGround() && HorizotalSpeed >= 0)
+		{
+			if (OnSliding.IsBound())
+			{
+				OnSliding.Broadcast();
+			}
+		}
 	
 		LastSlideHeight = GetActorLocation().Z;
 	}
@@ -398,6 +410,10 @@ void APlayerCharacter::OnMovementModeChanged(EMovementMode PreviousMovementMode,
 		if( (curTime - LastJumpPressTime) < JumpBufferTime )
 		{
 			Jump();
+			if (OnJump.IsBound())
+			{
+				OnJump.Broadcast();
+			}
 		}
 	}
 }
