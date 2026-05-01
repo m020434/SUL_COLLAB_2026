@@ -44,11 +44,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int CurrentMag;
 
+	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 	bool CanShoot = true;
+	bool InReload = false;
 
 public:	
 	// Called every frame
