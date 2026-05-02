@@ -201,11 +201,26 @@
 
 		float HorizotalSpeed = HorizotalVelocity.Length();
 		
-		if (GetCharacterMovement()->IsMovingOnGround() && HorizotalSpeed >= 0)
+		if (GetCharacterMovement()->IsMovingOnGround() && HorizotalSpeed > 0)
 		{
-			if (OnSliding.IsBound())
+			if (!IsSlideDown)
 			{
-				OnSliding.Broadcast();
+				if (IsSliding.IsBound())
+				{
+					IsSliding.Broadcast();
+				}
+				IsSlideDown = true;
+			}
+		}
+		else
+		{
+			if (IsSlideDown)
+			{
+				if (IsNotSliding.IsBound())
+				{
+					IsNotSliding.Broadcast();
+				}
+				IsSlideDown = false;
 			}
 		}
 	
@@ -253,6 +268,8 @@
 	{
 			CanSlide = true;
 	}
+
+
 #pragma endregion
 
 #pragma region Dash
@@ -262,6 +279,7 @@
 		if(!(PlayerMovementState == PlayerMovementState::Walk && CanDash && GetCharacterMovement()->MovementMode != MOVE_Walking) ) return;
 		
 		Dash();
+		
 	}
 	
 	//Dash cancels all existing momentum and launches the player in the direction they're moving (or directly forward if they aren't moving)
@@ -293,6 +311,11 @@
 		#pragma endregion
 		
 		LaunchCharacter(PlayerVelocity, false, false);
+
+		if (OnDash.IsBound())
+		{
+			OnDash.Broadcast();
+		}
 		
 		GetWorldTimerManager().SetTimer(DashTimer, this, &APlayerCharacter::EndDash, DashTime);
 	}
@@ -307,7 +330,11 @@
 		//Reset state
 		GetCharacterMovement()->GravityScale = StoredGravityScale;
 		PlayerMovementState = PlayerMovementState::Walk;
-		
+
+		if (OnStopDash.IsBound())
+		{
+			OnStopDash.Broadcast();
+		}
 		//Cooldown
 		//GetWorldTimerManager().SetTimer(DashCooldownTimer, this, &APlayerCharacter::ResetDash, DashCooldownTime);
 	}
@@ -334,12 +361,20 @@
 		
 			GetMovementComponent()->AddInputVector(MoveDirection.RotateVector(FVector::ForwardVector) * Input.X);
 			GetMovementComponent()->AddInputVector(MoveDirection.RotateVector(FVector::RightVector) * Input.Y);
+			if (OnWalking.IsBound())
+			{
+				OnWalking.Broadcast();
+			}
 		}
 	}
 	// Set the player input to zero for the dashes
 	void APlayerCharacter::StopMove_Implementation(FVector2D Input)
 	{
 		PlayerInputDirection = FVector2D::Zero();
+		if (StopWalking.IsBound())
+		{
+			StopWalking.Broadcast();
+		}
 	}
 
 	// Change the direction the player is facing
@@ -355,6 +390,11 @@
 		LastJumpPressTime = UKismetSystemLibrary::GetGameTimeInSeconds(GetWorld());
 		
 		Jump();
+
+		if (OnJump.IsBound())
+		{
+			OnJump.Broadcast();
+		}
 		if (PlayerMovementState == PlayerMovementState::Slide)
 			EndSlide();
 	}
@@ -409,11 +449,7 @@ void APlayerCharacter::OnMovementModeChanged(EMovementMode PreviousMovementMode,
 		float curTime = UKismetSystemLibrary::GetGameTimeInSeconds(GetWorld());
 		if( (curTime - LastJumpPressTime) < JumpBufferTime )
 		{
-			Jump();
-			if (OnJump.IsBound())
-			{
-				OnJump.Broadcast();
-			}
+
 		}
 	}
 }

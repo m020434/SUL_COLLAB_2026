@@ -15,11 +15,18 @@ class UHealthComponent;
 	//Slide events
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSlideStart);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSlideEnd);
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSliding);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FIsSliding);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FIsNotSliding);
 
 	// For Jump
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnJump);
+	//For Dash
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDash);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStopDash);
 
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWalking);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStopWalking);
+	
 	//State Machine Enum
 	UENUM(BlueprintType)
 	enum PlayerMovementState
@@ -57,11 +64,23 @@ public:
 		UPROPERTY(BlueprintAssignable)
 		FOnSlideEnd OnSlideEnd;
 		UPROPERTY(BlueprintAssignable)
-		FSliding OnSliding;
+		FIsSliding IsSliding;
+		UPROPERTY(BlueprintAssignable)
+		FIsNotSliding IsNotSliding;
+	
+		UPROPERTY(BlueprintAssignable)
+		FOnDash OnDash;
+		UPROPERTY(BlueprintAssignable)
+		FOnStopDash OnStopDash;
+
 		UPROPERTY(BlueprintAssignable)
 		FOnJump OnJump;
+
+		UPROPERTY(BlueprintAssignable)
+		FOnWalking OnWalking;
+		UPROPERTY(BlueprintAssignable)
+		FStopWalking StopWalking;
 		
-		//TODO: Dash events
 	#pragma endregion
 	
 protected:
@@ -229,6 +248,7 @@ protected:
 	// Slide Variables
 	bool PlayerSlideHeld = false;
 	bool CanSlide = true;
+	bool IsSlideDown;
 	bool MinSlide = false;
 	float StoredFriction;
 	FVector SlidingForce;
