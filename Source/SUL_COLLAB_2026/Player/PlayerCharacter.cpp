@@ -421,6 +421,10 @@
 	{
 		Wildcard = NewWildcard;
 		Wildcard->WildcardFinished.AddDynamic(this, &APlayerCharacter::DestroyCard);
+		if (PickUpCard.IsBound())
+		{
+			PickUpCard.Broadcast();
+		}
 	}
 
 	

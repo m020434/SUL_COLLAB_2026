@@ -18,12 +18,13 @@ class UHealthComponent;
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FIsSliding);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FIsNotSliding);
 
-	// For Jump
+	//For Jump
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnJump);
 	//For Dash
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDash);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStopDash);
 
+	//For Walking
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWalking);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStopWalking);
 	
@@ -43,6 +44,8 @@ class UHealthComponent;
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnShoot);
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_OnReload);
 
+	//PickUp Card
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(F_PickUpCard);
 
 #pragma endregion
 
@@ -80,6 +83,9 @@ public:
 		FOnWalking OnWalking;
 		UPROPERTY(BlueprintAssignable)
 		FStopWalking StopWalking;
+
+		UPROPERTY(BlueprintAssignable)
+		F_PickUpCard PickUpCard;
 		
 	#pragma endregion
 	
