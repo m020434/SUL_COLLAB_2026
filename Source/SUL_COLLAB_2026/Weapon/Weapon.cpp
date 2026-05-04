@@ -58,6 +58,7 @@ void AWeapon::Reloading_Implementation()
 	ReloadAnimation();
 	GetWorldTimerManager().SetTimer(ReloadTimer, this, &AWeapon::Reload, ReloadCooldown);
 	InReload = true;
+	CanShoot= false;
 }
 
 void AWeapon::ResetShootCooldown_Implementation()
