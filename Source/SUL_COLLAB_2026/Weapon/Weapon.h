@@ -10,6 +10,13 @@ class UStaticMeshComponent;
 class UArrowComponent;
 class USceneComponent;
 
+#pragma region Type Declarations
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStartReload);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEndReload, int, BulletCount);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnShoot, int, BulletCount);
+
+#pragma endregion
+
 UCLASS()
 class SUL_COLLAB_2026_API AWeapon : public AActor
 {
@@ -44,7 +51,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int CurrentMag;
 
-	
+	UPROPERTY(BlueprintAssignable)
+	FOnStartReload OnStartReload;
+	UPROPERTY(BlueprintAssignable)
+	FOnEndReload OnEndReload;
+	UPROPERTY(BlueprintAssignable)
+	FOnShoot OnShoot;
 
 protected:
 	// Called when the game starts or when spawned
@@ -73,4 +85,5 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void ShootingAnimation();
+	
 };
