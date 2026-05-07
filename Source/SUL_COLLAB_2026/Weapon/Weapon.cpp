@@ -56,6 +56,12 @@ void AWeapon::Reloading_Implementation()
 	if (CurrentMag >= MagSize) return;
 	if (InReload) return;
 	ReloadAnimation();
+	
+	if (OnStartReload.IsBound())
+	{
+		OnStartReload.Broadcast();
+	}
+	
 	GetWorldTimerManager().SetTimer(ReloadTimer, this, &AWeapon::Reload, ReloadCooldown);
 	InReload = true;
 	CanShoot= false;
@@ -71,6 +77,12 @@ void AWeapon::Reload_Implementation()
 {
 	CurrentMag = MagSize;
 	InReload = false;
+	
+	if (OnEndReload.IsBound())
+	{
+		OnEndReload.Broadcast(CurrentMag);
+	}
+	
 	ResetShootCooldown();
 }
 
@@ -81,14 +93,17 @@ void AWeapon::Shoot_Implementation()
 		CanShoot = false;
 
 		ShootingAnimation();
-		
+
 		FVector Location = FirePoint->GetComponentLocation();
 		FRotator Rotation = FirePoint->GetComponentRotation();
 		GetWorld()->SpawnActor(ProjectilePrefab, &Location, &Rotation);
 
 		CurrentMag--;
 
-		
+		if (OnShoot.IsBound())
+		{
+			OnShoot.Broadcast(CurrentMag);
+		}
 		
 		if (CurrentMag <= 0)
 		{
