@@ -38,6 +38,7 @@
 		HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 		
 		this->OnDestroyed.AddDynamic(this, &APlayerCharacter::OnCharDestroyed);
+		SlideRequiredHeadroom = 60;
 	}
 	
 	void APlayerCharacter::OnCharDestroyed(AActor* actor)
@@ -53,6 +54,7 @@
 	void APlayerCharacter::BeginPlay()
 	{
 		Super::BeginPlay();
+		SlideHeadroomVec = FVector(0.0f, 0.0f, SlideRequiredHeadroom);
 	
 		StoredFriction = GetCharacterMovement()->GroundFriction;
 		StoredGravityScale = GetCharacterMovement()->GravityScale;
@@ -133,6 +135,28 @@
 	bool APlayerCharacter::CheckCanSlide()
 	{
 		return PlayerMovementState == PlayerMovementState::Walk && !GetCharacterMovement()->IsFalling() && PlayerInputDirection.X > 0 && CanSlide;
+	}
+	
+	bool APlayerCharacter::CheckCanUnslide()
+	{
+		TArray<AActor*> excludeActors;
+		excludeActors.Push(this);
+		
+		FHitResult hitRes; 
+		UKismetSystemLibrary::LineTraceSingle(
+			GetWorld(),
+			GetActorLocation(),
+			GetActorLocation() + SlideHeadroomVec,
+			ETraceTypeQuery::TraceTypeQuery3,
+			true,
+			excludeActors,
+			EDrawDebugTrace::Type::None,
+			hitRes,
+			true
+		);
+		
+		//UDB::Print(hitRes.GetActor());
+		return !hitRes.bBlockingHit;
 	}
 
 	void APlayerCharacter::DoSlide_Implementation(bool Input)
@@ -225,6 +249,11 @@
 		}
 	
 		LastSlideHeight = GetActorLocation().Z;
+		
+		if(MinSlide && !PlayerSlideHeld && CheckCanUnslide()) //Trace goes last for perf. Only evaluated if the bools are both true
+		{
+			EndSlide();
+		}
 	}
 
 	void APlayerCharacter::EndSlide()
@@ -249,24 +278,24 @@
 	void APlayerCharacter::ReachMinimumSlide()
 	{
 		MinSlide = true;
-		if(!PlayerSlideHeld)	//TODO: Would be better if this & StopSlide were a method
+		/*if(!PlayerSlideHeld)	//TODO: Would be better if this & StopSlide were a method
 		{
 			EndSlide();
-		}
+		}*/
 	}
 
 	void APlayerCharacter::StopSlide_Implementation()
 	{
 		PlayerSlideHeld = false;
-		if (PlayerMovementState == PlayerMovementState::Slide && MinSlide) //TODO: Would be better if this & ReachMinimumSlide were a method
+		/*if (PlayerMovementState == PlayerMovementState::Slide && MinSlide) //TODO: Would be better if this & ReachMinimumSlide were a method
 		{
 			EndSlide();
-		}
+		}*/
 	}
 	
 	void APlayerCharacter::ResetSlide() //End of cooldown
 	{
-			CanSlide = true;
+		CanSlide = true;
 	}
 
 
@@ -395,7 +424,7 @@
 		{
 			OnJump.Broadcast();
 		}
-		if (PlayerMovementState == PlayerMovementState::Slide)
+		if (PlayerMovementState == PlayerMovementState::Slide && CheckCanUnslide())
 			EndSlide();
 	}
 #pragma endregion
@@ -453,7 +482,7 @@ void APlayerCharacter::OnMovementModeChanged(EMovementMode PreviousMovementMode,
 		float curTime = UKismetSystemLibrary::GetGameTimeInSeconds(GetWorld());
 		if( (curTime - LastJumpPressTime) < JumpBufferTime )
 		{
-
+			Jump();
 		}
 	}
 }

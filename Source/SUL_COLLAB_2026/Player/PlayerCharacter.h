@@ -131,7 +131,8 @@ protected:
 
 		//Slide methods
 		bool CheckCanSlide();
-		void UpdateSlide();
+	bool CheckCanUnslide();
+	void UpdateSlide();
 		void EndSlide();
 		void ReachMinimumSlide();
 		void ResetSlide();
@@ -229,6 +230,8 @@ protected:
 		float SlideForce;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Slide")
 		float SlideCooldownTime;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Slide")
+		float SlideRequiredHeadroom; //Would be much better if this was automatically calculated but I don't have time for that -j
 	#pragma endregion
 
 	#pragma region Gun Designer Variable
@@ -260,6 +263,7 @@ protected:
 	FVector SlidingForce;
 	FVector BrakingForce;
 	float LastSlideHeight;
+	FVector SlideHeadroomVec;
 
 	//Jump buffering
 	float LastJumpPressTime = 0.0f;
